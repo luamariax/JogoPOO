@@ -1,0 +1,1 @@
+#lê ComponenteIA de cada inimigo → modifica ComponenteFisica deles

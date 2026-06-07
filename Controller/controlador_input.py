@@ -1,0 +1,1 @@
+#lê teclado → modifica ComponenteFisica do Jogador

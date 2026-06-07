@@ -1,0 +1,1 @@
+#Onde a entidade está no mundo

@@ -1,0 +1,1 @@
+# Atualiza o offset seguindo o jogador

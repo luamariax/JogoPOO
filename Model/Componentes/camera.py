@@ -1,0 +1,1 @@
+# Guarda o offset do mundo em relação à tela, para a câmera seguir o jogador

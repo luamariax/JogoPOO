@@ -1,0 +1,1 @@
+#lê ComponentePosicao + ComponenteColisao → resolve sobreposições → preenche colidindo_com

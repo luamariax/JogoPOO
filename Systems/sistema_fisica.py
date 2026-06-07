@@ -1,0 +1,1 @@
+#lê ComponenteFisica de todas as entidades → atualiza ComponentePosicao
