@@ -2,7 +2,7 @@
 #O Voador recebe gravidade=False. O Saltador recebe gravidade=True. Mesma classe, comportamento diferente.
 
 class ComponenteFisica:
-    def __init__(self, velocidade=0, gravidade=True):
+    def __init__(self, velocidade: float = 0, gravidade: bool = True):
         self.vel_x = 0
         self.vel_y = 0
         self.velocidade = velocidade

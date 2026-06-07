@@ -1,7 +1,7 @@
 #Saúde e dano
 
 class ComponenteVida:
-    def __init__(self, hp, dano=1):
+    def __init__(self, hp: int, dano: int = 1):
         self.hp = hp
         self.hp_max = hp
         self.dano = dano
