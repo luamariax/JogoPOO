@@ -17,3 +17,4 @@ class TelaJogo:
         self.clock = pygame.time.Clock() #controla o FPS, vai ser usado no loop principal
 
         def desenhar(self, entidades):
+            pass
