@@ -2,7 +2,6 @@ import pygame
 
 pygame.init()
 sheet = pygame.image.load("mini_capy.png").convert_alpha()
-
 LARGURA_SPRITE  = 48   # ajuste conforme o tamanho real
 ALTURA_SPRITE   = 48
 COLUNAS         = 5
