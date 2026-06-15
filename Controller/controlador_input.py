@@ -1,24 +1,33 @@
-#lê teclado → modifica ComponenteFisica do Jogador
-# controller/controlador_input.py
+# lê teclado → modifica ComponenteFisica do Jogador
+
 import pygame
-from Model.jogador import Jogador
 
 class ControladorInput:
-    """Lê as teclas e modifica o ComponenteFisica do jogador."""
+    VELOCIDADE_X = 5
+    FORCA_PULO = -10  # negativo porque y cresce para baixo no pygame
+
     @staticmethod
     def processar_teclado(jogador):
-        """Chamar a cada frame. Aplica velocidade horizontal baseada nas setas."""
-        fisica = jogador.obter("fisica")
+        fisica = jogador.obter_componente("fisica")
         if not fisica:
             return
-
         teclas = pygame.key.get_pressed()
+        ControladorInput._processar_movimento_horizontal(fisica, teclas)
+        ControladorInput._processar_pulo(fisica, teclas)
+
+    @staticmethod
+    def _processar_movimento_horizontal(fisica, teclas):
+        
         if teclas[pygame.K_LEFT]:
-            fisica.vel_x = -5
+            fisica.vel_x = -ControladorInput.VELOCIDADE_X
         elif teclas[pygame.K_RIGHT]:
-            fisica.vel_x = 5
+            fisica.vel_x = ControladorInput.VELOCIDADE_X
         else:
             fisica.vel_x = 0
 
-        # O pulo (K_SPACE) só será utilizado na Fase 2 com gravidade ativada
-        # Por enquanto ignoramos
+    @staticmethod
+    def _processar_pulo(fisica, teclas):
+        
+        if teclas[pygame.K_SPACE] and fisica.no_chao:
+            fisica.vel_y = ControladorInput.FORCA_PULO
+            fisica.no_chao = False
