@@ -1,30 +1,66 @@
+
 {
   "nome": "Fase Teste",
+  "sprites": {
+    "jogador_andar_direita_0": "jogador_andar_direita_0.png",
+    "jogador_andar_direita_1": "jogador_andar_direita_1.png",
+    "jogador_andar_esquerda_0": "jogador_andar_esquerda_0.png",
+    "jogador_andar_esquerda_1": "jogador_andar_esquerda_1.png",
+    "grama_chao_superior": "grama_chao_superior.png",
+    "grama_chao_inferior": "grama_chao_inferior.png",
+    "grama_plataforma_ponta_esquerda": "grama_plataforma_ponta_esquerda.png",
+    "grama_plataforma_meio": "grama_plataforma_meio.png",
+    "grama_plataforma_ponta_direita": "grama_plataforma_ponta_direita.png",
+    "item_moeda": "item_moeda.png"
+  },
   "entidades": [
     {
-      "tipo": "plataforma",
+      "tipo": "chao",
       "x": 0,
       "y_offset": -60,
       "largura_tela": true,
-      "largura": 50,
-      "altura": 50,
-      "solido": true
+      "altura": 128,
+      "solido": true,
+      "camadas": [
+        { "sprite": "grama_chao_superior", "altura_px": 64 },
+        { "sprite": "grama_chao_inferior", "altura_px": 64 }
+      ]
     },
     {
       "tipo": "plataforma",
       "x": 300,
-      "y_offset": -150,
-      "largura": 100,
-      "altura": 20,
-      "solido": true
+      "y_offset": -300,
+      "largura": 192,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plataforma_ponta_esquerda",
+        "meio": "grama_plataforma_meio",
+        "direita": "grama_plataforma_ponta_direita"
+      }
     },
     {
       "tipo": "plataforma",
-      "x": 480,
-      "y_offset": -240,
-      "largura": 100,
-      "altura": 20,
-      "solido": true
+      "x": 600,
+      "y_offset": -400,
+      "largura": 192,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plataforma_ponta_esquerda",
+        "meio": "grama_plataforma_meio",
+        "direita": "grama_plataforma_ponta_direita"
+      }
+    },
+    {
+      "tipo": "item",
+      "x": 350,
+      "y_offset": -340,
+      "largura": 16,
+      "altura": 16,
+      "solido": false,
+      "tipo_item": "moeda",
+      "sprite": "item_moeda"
     }
   ]
 }
