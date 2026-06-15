@@ -96,7 +96,7 @@ class Fase:
             y_atual = y_base
             for idx, chave_sprite in enumerate(sprites_camadas):
                 tile = Entidade()
-                tile.adicionar_componente("posicao", ComponentePosicao(x, y_atual, TAMANHO_TILE))
+                tile.adicionar_componente("posicao", ComponentePosicao(x, y_atual, TAMANHO_TILE, TAMANHO_TILE))
                 tile.adicionar_componente("colisao", ComponenteColisao(solido=True, tipo="normal"))
                 tile.adicionar_componente("sprite", ComponenteSprite(chave_imagem=chave_sprite))
                 entidades.append(tile)

@@ -18,7 +18,7 @@ class ControladorJogo:
         self.tela = TelaJogoTeste()   # <== MUDE AQUI!
         self.jogador = Jogador(x=100, y=self.tela.altura - 600)
         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
-        self.fase.carregar("fase_teste.json")
+        self.fase.carregar("fase_dois.json")
         self.camera = ComponenteCamera()
         self.sistema_fisica = SistemaFisica(gravidade=0.5)
         self.sistema_colisao = SistemaColisao()
@@ -42,7 +42,7 @@ class ControladorJogo:
                     if evento.key == pygame.K_RETURN:
                         self.jogador = Jogador(x=100, y=self.tela.altura - 200)
                         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
-                        self.fase.carregar("fase_teste.json")
+                        self.fase.carregar("fase_dois.json")
                         self.camera = ComponenteCamera()
                         self.estado = "jogo"
                     elif evento.key == pygame.K_ESCAPE:

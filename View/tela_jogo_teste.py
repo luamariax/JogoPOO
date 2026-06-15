@@ -17,7 +17,7 @@ class TelaJogoTeste:
         pygame.init()
         info = pygame.display.Info()
         self.largura = info.current_w
-        self.altura = info.current_h
+        self.altura = info.current_h - 80
         self.superficie = pygame.display.set_mode((self.largura, self.altura))
         pygame.display.set_caption("JOGO_APPOO")
         self.clock = pygame.time.Clock()
@@ -208,4 +208,5 @@ class TelaJogoTeste:
         self.clock.tick(fps)
 
     def fechar(self):
+        sys.exit()
         pygame.quit()
