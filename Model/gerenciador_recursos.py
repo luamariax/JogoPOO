@@ -58,3 +58,12 @@ class GerenciadorRecursos:
         surface = pygame.Surface((32, 32))
         surface.fill((255, 0, 255))
         return surface
+    
+    @classmethod
+    def carregar_lote(cls, sprites_dict: dict[str, str], tamanho_padrao: tuple = None):
+        """
+        Recebe dicionário {chave: nome_arquivo} e carrega todas as imagens.
+        Exemplo: {"grama_chao_superior": "grama_chao_superior.png", ...}
+        """
+        for chave, nome_arquivo in sprites_dict.items():
+            cls.carregar(chave, nome_arquivo, tamanho_padrao)

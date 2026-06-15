@@ -17,13 +17,13 @@
     {
       "tipo": "chao",
       "x": 0,
-      "y_offset": -60,
+      "y_offset": -130,
       "largura_tela": true,
       "altura": 128,
       "solido": true,
       "camadas": [
-        { "sprite": "grama_chao_superior", "altura_px": 64 },
-        { "sprite": "grama_chao_inferior", "altura_px": 64 }
+        {"altura_px": 64, "sprite": "grama_chao_superior"},
+        {"altura_px": 64, "sprite": "grama_chao_inferior"}
       ]
     },
     {

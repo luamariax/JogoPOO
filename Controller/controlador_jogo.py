@@ -15,7 +15,7 @@ from Systems.sistema_camera import SistemaCamera
 class ControladorJogo:
     def __init__(self):
         self.tela = TelaJogoTeste()   # <== MUDE AQUI!
-        self.jogador = Jogador(x=100, y=self.tela.altura - 200)
+        self.jogador = Jogador(x=100, y=self.tela.altura - 600)
         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
         self.fase.carregar("fase_teste.json")
         self.camera = ComponenteCamera()
@@ -32,9 +32,6 @@ class ControladorJogo:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.rodando = False
-
-                self.tela.processar_menu(evento)
-
                 return
 
             if evento.type == pygame.KEYDOWN:
@@ -44,6 +41,7 @@ class ControladorJogo:
                         self.jogador = Jogador(x=100, y=self.tela.altura - 200)
                         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
                         self.fase.carregar("fase_teste.json")
+                        self.camera = ComponenteCamera()
                         self.estado = "jogo"
                     elif evento.key == pygame.K_ESCAPE:
                         self.rodando = False
@@ -82,6 +80,19 @@ class ControladorJogo:
         pos_jog = self.jogador.obter_componente("posicao")
         self.sistema_camera.atualizar(self.camera, pos_jog)
 
+    def verificar_coleta_itens(self):
+        for entidade in self.fase.entidades[:]:  # iterar sobre cópia
+            item = entidade.obter_componente("item")
+            if item and not item.coletado:
+                # Verifica colisão com o jogador
+                pos_jog = self.jogador.obter_componente("posicao")
+                pos_item = entidade.obter_componente("posicao")
+                if pos_jog and pos_item and pos_jog.rect.colliderect(pos_item.rect):
+                    item.coletado = True
+                    self.fase.entidades.remove(entidade)
+                    if item.tipo == "moeda":
+                        self.moedas += item.valor
+                        print(f"Moeda coletada! Total: {self.moedas}")
 
     def executar(self):
         while self.rodando:
