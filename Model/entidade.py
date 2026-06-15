@@ -1,12 +1,11 @@
-from abc import ABC, abstractmethod
+# model/entidade.py
+class Entidade:
+    """Classe base que armazena componentes. Nenhuma lógica de jogo aqui."""
+    def __init__(self):
+        self._componentes = {}
 
-class Entidade(ABC):
-    def __init__(self, id: int):
-        self.id = id
-        self.componentes = {}
+    def adicionar_componente(self, nome, componente):
+        self._componentes[nome] = componente
 
-    def adicionar(self, componente):
-        self.componentes[type(componente)] = componente
-
-    def obter(self, tipo):
-        return self.componentes.get(tipo)
+    def obter_componente(self, nome):
+        return self._componentes.get(nome)

@@ -1,0 +1,30 @@
+{
+  "nome": "Fase Teste",
+  "entidades": [
+    {
+      "tipo": "plataforma",
+      "x": 0,
+      "y_offset": -60,
+      "largura_tela": true,
+      "largura": 50,
+      "altura": 50,
+      "solido": true
+    },
+    {
+      "tipo": "plataforma",
+      "x": 300,
+      "y_offset": -150,
+      "largura": 100,
+      "altura": 20,
+      "solido": true
+    },
+    {
+      "tipo": "plataforma",
+      "x": 480,
+      "y_offset": -240,
+      "largura": 100,
+      "altura": 20,
+      "solido": true
+    }
+  ]
+}
