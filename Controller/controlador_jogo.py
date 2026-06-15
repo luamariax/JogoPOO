@@ -11,6 +11,7 @@ from Model.Componentes.camera import ComponenteCamera
 from Systems.sistema_fisica import SistemaFisica
 from Systems.sistema_colisao import SistemaColisao
 from Systems.sistema_camera import SistemaCamera
+from Systems.sistema_animacao import SistemaAnimacao
 
 class ControladorJogo:
     def __init__(self):
@@ -22,6 +23,7 @@ class ControladorJogo:
         self.sistema_fisica = SistemaFisica(gravidade=0.5)
         self.sistema_colisao = SistemaColisao()
         self.sistema_camera = SistemaCamera(self.tela.largura)
+        self.sistema_animacao = SistemaAnimacao()
         self.rodando = True
         self.estado = "menu"          # estados: menu, jogo, pause
         self.fase_atual = 1
@@ -76,6 +78,8 @@ class ControladorJogo:
         self.sistema_fisica.atualizar(self.fase.entidades)
         # Resolve colisão do jogador com plataformas
         self.sistema_colisao.resolver_colisoes(self.jogador, self.fase.plataformas)
+        #Atualiza a sprite de movimento
+        self.sistema_animacao.atualizar(self.fase.entidades) 
         # Atualiza câmera
         pos_jog = self.jogador.obter_componente("posicao")
         self.sistema_camera.atualizar(self.camera, pos_jog)

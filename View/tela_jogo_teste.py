@@ -1,8 +1,10 @@
 # view/tela_jogo.py
 import pygame
 from Model.gerenciador_recursos import GerenciadorRecursos
+import sys
+import os
 
-COR_FUNDO    = (30, 30, 60)   # azul escuro — céu noturno
+COR_FUNDO    = (135, 206, 235)   # azul escuro — céu noturno
 COR_MENU     = (20, 20, 40)
 COR_TEXTO    = (255, 255, 255)
 COR_PAUSE    = (0, 0, 0, 150) # semi-transparente
@@ -19,19 +21,85 @@ class TelaJogoTeste:
         self.superficie = pygame.display.set_mode((self.largura, self.altura))
         pygame.display.set_caption("JOGO_APPOO")
         self.clock = pygame.time.Clock()
-        self.fonte_grande = pygame.font.SysFont("Arial", 48, bold=True)
-        self.fonte_media  = pygame.font.SysFont("Arial", 28)
-        self.fonte_pequena = pygame.font.SysFont("Arial", 18)
+        #escrita
+        self.fonte_grande = pygame.font.SysFont("serif", 64, bold=True)
+        self.fonte_media  = pygame.font.SysFont("serif", 28, bold=True)
+        self.fonte_pequena = pygame.font.SysFont("serif", 22)
+        #imagem de fundo
+        self.background = self.carregar_background()
+        #tamanho botões
+        posicao_x_botao = self.largura // 2 -130
+        posicao_y_botao = self.altura // 2 
+        self.btn_continuar = pygame.Rect(posicao_x_botao, posicao_y_botao, 260, 55)
+        self.btn_novo_jogo = pygame.Rect(posicao_x_botao, posicao_y_botao+60, 260, 55)
+
+
+    # ------------------------------------------------------------------
+    # Utitlidades para criar o fundo e desenhar os botões
+    # ------------------------------------------------------------------
+    def carregar_background(self):
+        caminho = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "Assets",
+            "background_pampulha1.jpg"
+        )
+
+        caminho = os.path.abspath(caminho)
+
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            return pygame.transform.scale(img, (self.largura, self.altura))
+
+        return None
+
+    def desenhar_fundo(self, cor):
+        if self.background:
+            self.superficie.blit(self.background, (0, 0))
+        else:
+            self.superficie.fill(cor)
+
+    def desenhar_botao(self, rect, texto):
+        mouse = pygame.mouse.get_pos()
+
+        if rect.collidepoint(mouse):
+            cor = (100, 180, 60)
+        else:
+            cor = (70, 140, 50)
+
+        pygame.draw.rect(self.superficie, cor, rect, border_radius=6)
+        pygame.draw.rect(self.superficie, (220, 240, 180), rect, 2, border_radius=6)
+
+        label = self.fonte_media.render(texto, True, (255, 255, 255))
+        x = rect.centerx - label.get_width() // 2
+        y = rect.centery - label.get_height() // 2
+        self.superficie.blit(label, (x, y))
+
 
     # ------------------------------------------------------------------
     # Desenho por estado
     # ------------------------------------------------------------------
 
     def desenhar_menu(self):
-        self.superficie.fill(COR_MENU)
-        self._texto_centralizado("JogoPOO",       self.fonte_grande, COR_TEXTO, self.altura // 3)
-        self._texto_centralizado("ENTER — Jogar", self.fonte_media,  COR_TEXTO, self.altura // 2)
-        self._texto_centralizado("ESC   — Sair",  self.fonte_media,  COR_TEXTO, self.altura // 2 + 40)
+        self.desenhar_fundo((30, 120, 40))
+
+        titulo1 = self.fonte_grande.render("Floresta", True, (245, 232, 192))
+        titulo2 = self.fonte_grande.render("Ancestral", True, (245, 232, 192))
+
+        self.superficie.blit(titulo1, (self.largura // 2 - titulo1.get_width() // 2, 120))
+        self.superficie.blit(titulo2, (self.largura // 2 - titulo2.get_width() // 2, 190))
+
+        fonte_sub = pygame.font.SysFont("Times New Roman", 26, bold=True)
+        subtitulo = fonte_sub.render("A JORNADA DA CAPIVARA", True, (184, 216, 154))
+
+        self.superficie.blit(
+            subtitulo,
+            (self.largura // 2 - subtitulo.get_width() // 2, 275)
+        )
+
+        self.desenhar_botao(self.btn_continuar, "Continuar")
+        self.desenhar_botao(self.btn_novo_jogo, "Novo Jogo")
+
         pygame.display.flip()
 
     def desenhar_jogo(self, entidades: list, camera, hud: dict | None = None):
