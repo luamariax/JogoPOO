@@ -1,3 +1,4 @@
+"""
 import pygame
 
 pygame.init()
@@ -17,3 +18,9 @@ def recortar_sheet(sheet, larg, alt, colunas, linhas):
     return sprites
 
 todos = recortar_sheet(sheet, LARGURA_SPRITE, ALTURA_SPRITE, COLUNAS, LINHAS)
+"""
+from Controller.controlador_jogo import ControladorJogo
+
+if __name__ == "__main__":
+    jogo = ControladorJogo()
+    jogo.iniciar()
