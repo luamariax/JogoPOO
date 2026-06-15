@@ -32,8 +32,11 @@ class ControladorJogo:
             if evento.type == pygame.QUIT:
                 self.rodando = False
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 self.tela.processar_menu(evento)
 =======
+=======
+>>>>>>> Stashed changes
                 return
 
             if evento.type == pygame.KEYDOWN:
@@ -80,6 +83,9 @@ class ControladorJogo:
         # Atualiza câmera
         pos_jog = self.jogador.obter_componente("posicao")
         self.sistema_camera.atualizar(self.camera, pos_jog)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     def executar(self):
