@@ -4,6 +4,7 @@ import pygame
 import sys
 from Controller.controlador_input import ControladorInput
 from View.tela_jogo import TelaJogo
+from View.tela_jogo_teste import TelaJogoTeste # TELA TESTE
 from Model.jogador import Jogador
 from Model.fase import Fase
 from Model.Componentes.camera import ComponenteCamera
@@ -13,7 +14,7 @@ from Systems.sistema_camera import SistemaCamera
 
 class ControladorJogo:
     def __init__(self):
-        self.tela = TelaJogo()
+        self.tela = TelaJogoTeste()   # <== MUDE AQUI!
         self.jogador = Jogador(x=100, y=self.tela.altura - 200)
         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
         self.fase.carregar("fase_teste.json")
@@ -31,12 +32,9 @@ class ControladorJogo:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.rodando = False
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
                 self.tela.processar_menu(evento)
-=======
-=======
->>>>>>> Stashed changes
+
                 return
 
             if evento.type == pygame.KEYDOWN:
@@ -83,10 +81,7 @@ class ControladorJogo:
         # Atualiza câmera
         pos_jog = self.jogador.obter_componente("posicao")
         self.sistema_camera.atualizar(self.camera, pos_jog)
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
 
     def executar(self):
         while self.rodando:

@@ -1,7 +1,7 @@
 ## view/tela_jogo.py
 import pygame
 
-class TelaJogo:
+class TelaJogoTeste:
     def __init__(self, largura=None, altura=None):
         pygame.init()
         if largura is None or altura is None:
