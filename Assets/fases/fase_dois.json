@@ -2,13 +2,16 @@
   "nome": "Fase Dois Avançada",
   "largura_mundo": 1280,
   "sprites": {
-    "grama_superior": "grama_chao_superior.png",
-    "grama_inferior": "grama_chao_inferior.png",
-    "grama_rocha": "grama_chao_rocha.png",
-    "plat_esq": "plataforma_esquerda.png",
-    "plat_meio_a": "plataforma_meio_a.png",
-    "plat_meio_b": "plataforma_meio_b.png",
-    "plat_dir": "plataforma_direita.png",
+    "jogador_andar_direita_0": "jogador_andar_direita_0.png",
+    "jogador_andar_direita_1": "jogador_andar_direita_1.png",
+    "jogador_andar_esquerda_0": "jogador_andar_esquerda_0.png",
+    "jogador_andar_esquerda_1": "jogador_andar_esquerda_1.png",
+    "piso_grama_0": "grama_chao_superior.png",
+    "piso_grama_1": "grama_chao_inferior.png",
+    "piso_grama_2": "grama_chao_inferior.png",
+    "grama_plat_esquerda": "grama_plataforma_ponta_esquerda.png",
+    "grama_plat_meio": "grama_plataforma_meio.png",
+    "grama_plat_direita": "grama_plataforma_ponta_direita.png",
     "item_moeda": "item_moeda.png"
   },
   "entidades": [
@@ -17,7 +20,7 @@
       "y_offset": -130,
       "largura": 1280,
       "solido": true,
-      "sprites_camadas": ["grama_superior", "grama_inferior", "grama_rocha"]
+      "sprites_camadas": ["piso_grama_0", "piso_grama_1", "piso_grama_2"]
     },
     {
       "tipo": "plataforma",
@@ -27,9 +30,9 @@
       "altura": 64,
       "solido": true,
       "sprites": {
-        "esquerda": "grama_plataforma_ponta_esquerda",
-        "meio": "grama_plataforma_meio",
-        "direita": "grama_plataforma_ponta_direita"
+        "esquerda": "grama_plat_esquerda",
+        "meio": "grama_plat_meio",
+        "direita": "grama_plat_direita"
         }
     }
     ]
