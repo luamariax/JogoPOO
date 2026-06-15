@@ -4,7 +4,7 @@
 import pygame
 import sys
 import os
-
+from Model.jogador import Jogador
 class TelaJogo:
     def __init__(self):
         pygame.init()
@@ -39,7 +39,7 @@ class TelaJogo:
         self.fonte_botao    = pygame.font.SysFont("serif", 28, bold=True)
 
         # --- Background ---
-        caminho_bg = os.path.join(os.path.dirname(__file__), "Assets/background_pampulha1.jpg")
+        caminho_bg = os.path.join(os.path.dirname(__file__), "JogoPOO/Assets/background_pampulha1.jpg")
         if os.path.exists(caminho_bg):
             bg_raw = pygame.image.load(caminho_bg).convert()
             self.background = pygame.transform.scale(bg_raw, (self.largura, self.altura))

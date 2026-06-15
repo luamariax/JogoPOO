@@ -3,7 +3,7 @@
 # controller/controlador_jogo.py
 import pygame
 from Controller.controlador_input import ControladorInput
-from View.tela_jogo_teste import TelaJogo
+from View.tela_jogo import TelaJogo
 from Model.jogador import Jogador
 
 class ControladorJogo:
