@@ -36,6 +36,7 @@ class ControladorJogo:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.rodando = False
+                self.tela.processar_menu(evento)
 
     def executar(self):
         """Loop principal do jogo."""
