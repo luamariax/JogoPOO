@@ -1,33 +1,33 @@
-#lê teclado → modifica ComponenteFisica do Jogador
+# lê teclado → modifica ComponenteFisica do Jogador
 
 import pygame
-import sys
-from Model.Componentes.fisica import ComponenteFisica
 
 class ControladorInput:
-    def __init__(self):
-        self.espaco_pressionado = False
+    VELOCIDADE_X = 5
+    FORCA_PULO = -10  # negativo porque y cresce para baixo no pygame
 
-    def processar_eventos(self, jogador, eventos):
-        fisica = jogador.obter(ComponenteFisica)
+    @staticmethod
+    def processar_teclado(jogador):
+        fisica = jogador.obter_componente("fisica")
+        if not fisica:
+            return
         teclas = pygame.key.get_pressed()
+        ControladorInput._processar_movimento_horizontal(fisica, teclas)
+        ControladorInput._processar_pulo(fisica, teclas)
 
-        if teclas[pygame.K_RIGHT]:
-            fisica.vel_x = fisica.velocidade
-        elif teclas[pygame.K_LEFT]:
-            fisica.vel_x = -fisica.velocidade
+    @staticmethod
+    def _processar_movimento_horizontal(fisica, teclas):
+        
+        if teclas[pygame.K_LEFT]:
+            fisica.vel_x = -ControladorInput.VELOCIDADE_X
+        elif teclas[pygame.K_RIGHT]:
+            fisica.vel_x = ControladorInput.VELOCIDADE_X
         else:
             fisica.vel_x = 0
 
-        if teclas[pygame.K_SPACE]:
-            if fisica.no_chao and not self.espaco_pressionado:
-                fisica.vel_y = -10
-                self.espaco_pressionado = True
-        else:
-            self.espaco_pressionado = False
-
-        for evento in eventos:
-            if evento.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-    
+    @staticmethod
+    def _processar_pulo(fisica, teclas):
+        
+        if teclas[pygame.K_SPACE] and fisica.no_chao:
+            fisica.vel_y = ControladorInput.FORCA_PULO
+            fisica.no_chao = False

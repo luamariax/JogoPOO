@@ -1,26 +1,24 @@
 #lê ComponenteFisica de todas as entidades → atualiza ComponentePosicao
-
-import pygame
+# systems/sistema_fisica.py
 from Model.Componentes.fisica import ComponenteFisica
 from Model.Componentes.posicao import ComponentePosicao
 
 class SistemaFisica:
-    def atualizar(self, entidades):
+    """Aplica gravidade e atualiza posição com base na velocidade."""
+    def __init__(self, gravidade: float = 0.5):
+        self.gravidade = gravidade
+
+    def atualizar(self, entidades: list):
         for entidade in entidades:
-            fisica = entidade.obter(ComponenteFisica)
-            posicao = entidade.obter(ComponentePosicao)
+            fisica = entidade.obter_componente("fisica")
+            posicao = entidade.obter_componente("posicao")
+            if not fisica or not posicao:
+                continue
 
-            if fisica and posicao:
-                # Aplica gravidade
-                if not fisica.no_chao:
-                    fisica.vel_y += 0.5  # gravidade
+            # Aplica gravidade se necessário
+            if fisica.gravidade:
+                fisica.vel_y += self.gravidade
 
-                # Atualiza posição
-                posicao.x += fisica.vel_x
-                posicao.y += fisica.vel_y
-
-                #Limita para não sair da tela
-                if posicao.x < 0:
-                    posicao.x = 0
-                if posicao.x + posicao.largura > 800:
-                    posicao.x = 800 - posicao.largura
+            # Atualiza posição com base na velocidade
+            posicao.x += fisica.vel_x
+            posicao.y += fisica.vel_y
