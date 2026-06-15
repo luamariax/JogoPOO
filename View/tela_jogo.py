@@ -7,9 +7,8 @@ class TelaJogo:
     def __init__(self):
         pygame.init()
 
-        info = pygame.display.Info()
-        self.largura = info.current_w
-        self.altura = info.current_h
+        self.largura = 900
+        self.altura = 600
 
         self.janela = pygame.display.set_mode((self.largura, self.altura))
         pygame.display.set_caption("JOGOPOO")
@@ -17,171 +16,177 @@ class TelaJogo:
         self.clock = pygame.time.Clock()
 
         self.estado = "menu"
+        self.fase = 1
 
         self.background = self.carregar_background()
 
-        self.COR_TITULO = (245, 232, 192)
-        self.COR_SUBTITULO = (184, 216, 154)
-        self.COR_BTN_PRINCIPAL = (80, 150, 50)
-        self.COR_BTN_HOVER_P = (100, 180, 60)
-        self.COR_BTN_SECUNDARIO = (20, 50, 15)
-        self.COR_BTN_HOVER_S = (40, 80, 20)
-        self.COR_BTN_BORDA_P = (168, 212, 112)
-        self.COR_BTN_BORDA_S = (106, 154, 64)
-        self.COR_BTN_TEXTO_P = (240, 248, 232)
-        self.COR_BTN_TEXTO_S = (200, 232, 160)
+        self.fonte_titulo = pygame.font.SysFont("serif", 64, bold=True)
+        self.fonte_texto = pygame.font.SysFont("serif", 28, bold=True)
+        self.fonte_pequena = pygame.font.SysFont("serif", 22)
 
-        pygame.font.init()
-        self.fonte_titulo = pygame.font.SysFont("serif", 72, bold=True)
-        self.fonte_subtitulo = pygame.font.SysFont("serif", 22)
-        self.fonte_botao = pygame.font.SysFont("serif", 28, bold=True)
-
-        self.btn_continuar = pygame.Rect(0, 0, 260, 56)
-        self.btn_novo_jogo = pygame.Rect(0, 0, 260, 56)
-
-        self._calcular_layout()
+        self.btn_continuar = pygame.Rect(320, 330, 260, 55)
+        self.btn_novo_jogo = pygame.Rect(320, 400, 260, 55)
 
     def carregar_background(self):
-        caminho_bg = os.path.join(
+        caminho = os.path.join(
             os.path.dirname(__file__),
             "..",
             "Assets",
             "background_pampulha1.jpg"
         )
 
-        caminho_bg = os.path.abspath(caminho_bg)
+        caminho = os.path.abspath(caminho)
 
-        if os.path.exists(caminho_bg):
-            imagem = pygame.image.load(caminho_bg).convert()
-            return pygame.transform.scale(imagem, (self.largura, self.altura))
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            return pygame.transform.scale(img, (self.largura, self.altura))
 
         return None
 
-    def _calcular_layout(self):
-        cx = self.largura // 2
-        cy = self.altura // 2
-
-        self.btn_continuar.centerx = cx
-        self.btn_continuar.centery = cy + 20
-
-        self.btn_novo_jogo.centerx = cx
-        self.btn_novo_jogo.centery = cy + 90
-
-    def _desenhar_fundo(self):
+    def desenhar_fundo(self, cor):
         if self.background:
             self.janela.blit(self.background, (0, 0))
         else:
-            self.janela.fill((30, 120, 40))
+            self.janela.fill(cor)
 
-        overlay = pygame.Surface((self.largura, self.altura), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 90))
-        self.janela.blit(overlay, (0, 0))
+    def desenhar_botao(self, rect, texto):
+        mouse = pygame.mouse.get_pos()
 
-    def _desenhar_botao(
-        self,
-        rect,
-        texto,
-        hover,
-        cor_base,
-        cor_hover,
-        cor_borda,
-        cor_texto
-    ):
-        cor_fundo = cor_hover if hover else cor_base
+        if rect.collidepoint(mouse):
+            cor = (100, 180, 60)
+        else:
+            cor = (70, 140, 50)
 
-        pygame.draw.rect(self.janela, cor_fundo, rect, border_radius=6)
-        pygame.draw.rect(self.janela, cor_borda, rect, 2, border_radius=6)
+        pygame.draw.rect(self.janela, cor, rect, border_radius=6)
+        pygame.draw.rect(self.janela, (220, 240, 180), rect, 2, border_radius=6)
 
-        label = self.fonte_botao.render(texto, True, cor_texto)
+        label = self.fonte_texto.render(texto, True, (255, 255, 255))
         x = rect.centerx - label.get_width() // 2
         y = rect.centery - label.get_height() // 2
         self.janela.blit(label, (x, y))
 
     def desenhar_menu(self):
-        mouse_pos = pygame.mouse.get_pos()
+        self.desenhar_fundo((30, 120, 40))
 
-        self._desenhar_fundo()
+        titulo1 = self.fonte_titulo.render("Floresta", True, (245, 232, 192))
+        titulo2 = self.fonte_titulo.render("Ancestral", True, (245, 232, 192))
 
-        cx = self.largura // 2
-        base_y = self.altura // 2 - 220
+        self.janela.blit(titulo1, (self.largura // 2 - titulo1.get_width() // 2, 120))
+        self.janela.blit(titulo2, (self.largura // 2 - titulo2.get_width() // 2, 190))
 
-        titulo1 = self.fonte_titulo.render("Floresta", True, self.COR_TITULO)
-        titulo2 = self.fonte_titulo.render("Ancestral", True, self.COR_TITULO)
-
-        self.janela.blit(titulo1, (cx - titulo1.get_width() // 2, base_y))
-        self.janela.blit(titulo2, (cx - titulo2.get_width() // 2, base_y + 80))
-
-        subtitulo = self.fonte_subtitulo.render(
-            "✦  A  J O R N A D A  D A  C A P I V A R A ✦",
+        subtitulo = self.fonte_pequena = pygame.font.SysFont("Times New Roman", 26, bold=True)(
+            "A JORNADA DA CAPIVARA",
             True,
-            self.COR_SUBTITULO
+            (184, 216, 154)
         )
+
         self.janela.blit(
             subtitulo,
-            (cx - subtitulo.get_width() // 2, base_y + 160)
+            (self.largura // 2 - subtitulo.get_width() // 2, 275)
         )
 
-        pygame.draw.line(
-            self.janela,
-            self.COR_BTN_BORDA_P,
-            (cx - 120, base_y + 196),
-            (cx + 120, base_y + 196),
-            2
-        )
-
-        hover_continuar = self.btn_continuar.collidepoint(mouse_pos)
-        hover_novo = self.btn_novo_jogo.collidepoint(mouse_pos)
-
-        self._desenhar_botao(
-            self.btn_continuar,
-            "▶ Continuar",
-            hover_continuar,
-            self.COR_BTN_PRINCIPAL,
-            self.COR_BTN_HOVER_P,
-            self.COR_BTN_BORDA_P,
-            self.COR_BTN_TEXTO_P
-        )
-
-        self._desenhar_botao(
-            self.btn_novo_jogo,
-            "✦ Novo Jogo",
-            hover_novo,
-            self.COR_BTN_SECUNDARIO,
-            self.COR_BTN_HOVER_S,
-            self.COR_BTN_BORDA_S,
-            self.COR_BTN_TEXTO_S
-        )
+        self.desenhar_botao(self.btn_continuar, "Continuar")
+        self.desenhar_botao(self.btn_novo_jogo, "Novo Jogo")
 
         pygame.display.flip()
 
     def processar_menu(self, evento):
+        if self.estado != "menu":
+            return
+
         if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            mouse_pos = pygame.mouse.get_pos()
+            mouse = pygame.mouse.get_pos()
 
-            if self.btn_continuar.collidepoint(mouse_pos):
+            if self.btn_continuar.collidepoint(mouse):
                 self.estado = "jogando"
 
-            if self.btn_novo_jogo.collidepoint(mouse_pos):
+            if self.btn_novo_jogo.collidepoint(mouse):
                 self.estado = "jogando"
+                self.fase = 1
+
+    def desenhar_jogador(self, jogador):
+        pos = jogador.obter("posicao")
+
+        if pos:
+            pygame.draw.rect(
+                self.janela,
+                (255, 220, 0),
+                (pos.x, pos.y, pos.largura, pos.altura)
+            )
+
+    def desenhar_fase1(self, jogador):
+        self.desenhar_fundo((70, 160, 70))
+
+        texto = self.fonte_pequena.render(
+            "FASE 1 - Movimento simples",
+            True,
+            (255, 255, 255)
+        )
+        self.janela.blit(texto, (20, 20))
+
+        self.desenhar_jogador(jogador)
+
+    def desenhar_fase2(self, jogador):
+        self.desenhar_fundo((50, 120, 170))
+
+        texto = self.fonte_pequena.render(
+            "FASE 2 - Plataformas e pulo",
+            True,
+            (255, 255, 255)
+        )
+        self.janela.blit(texto, (20, 20))
+
+        pygame.draw.rect(self.janela, (100, 70, 40), (0, 520, 900, 80))
+        pygame.draw.rect(self.janela, (100, 70, 40), (250, 400, 180, 25))
+        pygame.draw.rect(self.janela, (100, 70, 40), (550, 320, 180, 25))
+
+        self.desenhar_jogador(jogador)
+
+    def desenhar_fase3(self, jogador):
+        self.desenhar_fundo((80, 40, 40))
+
+        texto = self.fonte_pequena.render(
+            "FASE 3 - Inimigos e desafio final",
+            True,
+            (255, 255, 255)
+        )
+        self.janela.blit(texto, (20, 20))
+
+        pygame.draw.rect(self.janela, (100, 70, 40), (0, 520, 900, 80))
+
+        pygame.draw.rect(self.janela, (200, 0, 0), (500, 470, 50, 50))
+        pygame.draw.rect(self.janela, (200, 0, 0), (700, 470, 50, 50))
+
+        self.desenhar_jogador(jogador)
+
+    def desenhar_game_over(self):
+        self.janela.fill((20, 20, 20))
+
+        texto = self.fonte_titulo.render("GAME OVER", True, (220, 40, 40))
+        self.janela.blit(
+            texto,
+            (self.largura // 2 - texto.get_width() // 2, 240)
+        )
+
+        pygame.display.flip()
 
     def desenhar(self, jogador):
         if self.estado == "menu":
             self.desenhar_menu()
             return
 
-        if self.background:
-            self.janela.blit(self.background, (0, 0))
-        else:
-            self.janela.fill((30, 120, 40))
+        if self.estado == "game_over":
+            self.desenhar_game_over()
+            return
 
-        pos = jogador.obter("posicao")
+        if self.fase == 1:
+            self.desenhar_fase1(jogador)
 
-        if pos:
-            pygame.draw.rect(
-                self.janela,
-                (255, 200, 0),
-                (pos.x, pos.y, pos.largura, pos.altura)
-            )
+        elif self.fase == 2:
+            self.desenhar_fase2(jogador)
+
+        elif self.fase == 3:
+            self.desenhar_fase3(jogador)
 
         pygame.display.flip()
 
