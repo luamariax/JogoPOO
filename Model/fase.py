@@ -21,6 +21,7 @@ class Fase:
         self.plataformas = []
         self.chao_y = tamanho_tela_y
         self.chao_x = tamanho_tela_x
+        self.largura_mundo = tamanho_tela_x   # inicialmente igual à tela
 
     def adicionar_entidade(self, entidade: Entidade):
         self.entidades.append(entidade)
@@ -53,6 +54,10 @@ class Fase:
         # 4. Adiciona o jogador (já existente)
         self.entidades.append(self.jogador)
 
+        # Após carregar dados, verifica se há largura_mundo definida
+        if "largura_mundo" in dados:
+            self.largura_mundo = dados["largura_mundo"]
+
     def _criar_entidade(self, dado: dict) -> list[Entidade]:
         tipo = dado.get("tipo")
         if tipo == "chao":
@@ -73,32 +78,29 @@ class Fase:
         # Posição Y base do chão (vinda do JSON)
         y_base = self.chao_y + dado["y_offset"]
         
-        # Obtém os sprites das camadas (espera-se duas: superior e inferior)
-        camadas = dado.get("camadas", [])
-        if len(camadas) < 2:
-            # Fallback: se não houver duas camadas definidas, não cria nada
+        # Obtém os sprites das camadas 
+        sprites_camadas = dado.get("sprites_camadas", [])
+        if not sprites_camadas:
             return entidades
         
-        sprite_superior = camadas[0]["sprite"]   # ex: "grama_chao_superior"
-        sprite_inferior = camadas[1]["sprite"]   # ex: "grama_chao_inferior"
         altura_tile = TAMANHO_TILE               # 64 pixels
         
+         # Determina a largura do chão
+        if dado.get("largura_tela", False):
+            largura_chao = self.largura_mundo
+        else:
+            largura_chao = dado.get("largura", self.largura_mundo)
+
         # Itera sobre a largura da tela em passos de TAMANHO_TILE
-        for x in range(0, self.chao_x, TAMANHO_TILE):
-            # Tile superior (grama)
-            tile_sup = Entidade()
-            tile_sup.adicionar_componente("posicao", ComponentePosicao(x, y_base, TAMANHO_TILE, altura_tile))
-            tile_sup.adicionar_componente("colisao", ComponenteColisao(solido=True, tipo="normal"))
-            tile_sup.adicionar_componente("sprite", ComponenteSprite(chave_imagem=sprite_superior))
-            entidades.append(tile_sup)
-            
-            # Tile inferior (terra)
-            tile_inf = Entidade()
-            tile_inf.adicionar_componente("posicao", ComponentePosicao(x, y_base + altura_tile, TAMANHO_TILE, altura_tile))
-            tile_inf.adicionar_componente("colisao", ComponenteColisao(solido=True, tipo="normal"))
-            tile_inf.adicionar_componente("sprite", ComponenteSprite(chave_imagem=sprite_inferior))
-            entidades.append(tile_inf)
-        
+        for x in range(0, largura_chao, TAMANHO_TILE):
+            y_atual = y_base
+            for idx, chave_sprite in enumerate(sprites_camadas):
+                tile = Entidade()
+                tile.adicionar_componente("posicao", ComponentePosicao(x, y_atual, TAMANHO_TILE))
+                tile.adicionar_componente("colisao", ComponenteColisao(solido=True, tipo="normal"))
+                tile.adicionar_componente("sprite", ComponenteSprite(chave_imagem=chave_sprite))
+                entidades.append(tile)
+                y_atual += TAMANHO_TILE
         return entidades
 
     def _criar_plataforma(self, dado: dict) -> list[Entidade]:

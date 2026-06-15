@@ -1,0 +1,36 @@
+{
+  "nome": "Fase Dois Avançada",
+  "largura_mundo": 1280,
+  "sprites": {
+    "grama_superior": "grama_chao_superior.png",
+    "grama_inferior": "grama_chao_inferior.png",
+    "grama_rocha": "grama_chao_rocha.png",
+    "plat_esq": "plataforma_esquerda.png",
+    "plat_meio_a": "plataforma_meio_a.png",
+    "plat_meio_b": "plataforma_meio_b.png",
+    "plat_dir": "plataforma_direita.png",
+    "item_moeda": "item_moeda.png"
+  },
+  "entidades": [
+    {
+      "tipo": "chao",
+      "y_offset": -130,
+      "largura": 1280,
+      "solido": true,
+      "sprites_camadas": ["grama_superior", "grama_inferior", "grama_rocha"]
+    },
+    {
+      "tipo": "plataforma",
+      "x": 600,
+      "y_offset": -400,
+      "largura": 640,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plataforma_ponta_esquerda",
+        "meio": "grama_plataforma_meio",
+        "direita": "grama_plataforma_ponta_direita"
+        }
+    }
+    ]
+}
