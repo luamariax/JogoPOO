@@ -61,6 +61,17 @@ class ControladorJogo:
                         self.estado = "jogo"
                     elif evento.key == pygame.K_ESCAPE:
                         self.rodando = False
+                        
+            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                if self.estado == "menu":
+                    mouse = pygame.mouse.get_pos()
+                    if self.tela.btn_continuar.collidepoint(mouse) or self.tela.btn_novo_jogo.collidepoint(mouse):
+                        self.jogador = Jogador(x=100, y=self.tela.altura - 200)
+                        self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
+                        self.fase.carregar("fase_dois.json")
+                        self.camera = ComponenteCamera()
+                        self.estado = "jogo"
+
 
         # Movimento contínuo (setas) apenas no estado jogo
         if self.estado == "jogo":
