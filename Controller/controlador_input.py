@@ -4,7 +4,7 @@ import pygame
 
 class ControladorInput:
     VELOCIDADE_X = 5
-    FORCA_PULO = -13  # negativo porque y cresce para baixo no pygame
+    FORCA_PULO = -15  # negativo porque y cresce para baixo no pygame
 
     @staticmethod
     def processar_teclado(jogador):

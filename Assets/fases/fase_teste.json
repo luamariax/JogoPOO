@@ -6,11 +6,12 @@
     "jogador_andar_direita_1": "jogador_andar_direita_1.png",
     "jogador_andar_esquerda_0": "jogador_andar_esquerda_0.png",
     "jogador_andar_esquerda_1": "jogador_andar_esquerda_1.png",
-    "grama_chao_superior": "grama_chao_superior.png",
-    "grama_chao_inferior": "grama_chao_inferior.png",
-    "grama_plataforma_ponta_esquerda": "grama_plataforma_ponta_esquerda.png",
-    "grama_plataforma_meio": "grama_plataforma_meio.png",
-    "grama_plataforma_ponta_direita": "grama_plataforma_ponta_direita.png",
+    "grama_chao_superior": "grama_centro_cima.png",
+    "piso_grama_1": "grama_centro_meio.png",
+    "grama_chao_inferior": "grama_centro_baixo.png",
+    "grama_plat_esquerda": "grama_plataforma_ponta_esquerda.png",
+    "grama_plat_meio": "grama_plataforma_meio.png",
+    "grama_plat_direita": "grama_plataforma_ponta_direita.png",
     "item_moeda": "item_moeda.png"
   },
   "entidades": [

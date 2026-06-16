@@ -6,9 +6,9 @@
     "jogador_andar_direita_1": "jogador_andar_direita_1.png",
     "jogador_andar_esquerda_0": "jogador_andar_esquerda_0.png",
     "jogador_andar_esquerda_1": "jogador_andar_esquerda_1.png",
-    "piso_grama_0": "grama_chao_superior.png",
-    "piso_grama_1": "grama_chao_inferior.png",
-    "piso_grama_2": "grama_chao_inferior.png",
+    "piso_grama_0": "grama_centro_cima.png",
+    "piso_grama_1": "grama_centro_meio.png",
+    "piso_grama_2": "grama_centro_baixo.png",
     "grama_plat_esquerda": "grama_plataforma_ponta_esquerda.png",
     "grama_plat_meio": "grama_plataforma_meio.png",
     "grama_plat_direita": "grama_plataforma_ponta_direita.png",
@@ -17,15 +17,67 @@
   "entidades": [
     {
       "tipo": "chao",
-      "y_offset": -130,
-      "largura": 1280,
+      "y_offset": -195,
+      "largura": 6400,
       "solido": true,
       "sprites_camadas": ["piso_grama_0", "piso_grama_1", "piso_grama_2"]
     },
     {
       "tipo": "plataforma",
       "x": 600,
-      "y_offset": -400,
+      "y_offset": -380,
+      "largura": 640,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plat_esquerda",
+        "meio": "grama_plat_meio",
+        "direita": "grama_plat_direita"
+        }
+    },
+     {
+      "tipo": "plataforma",
+      "x": 1500,
+      "y_offset": -380,
+      "largura": 768,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plat_esquerda",
+        "meio": "grama_plat_meio",
+        "direita": "grama_plat_direita"
+        }
+    },
+     {
+      "tipo": "plataforma",
+      "x": 2500,
+      "y_offset": -380,
+      "largura": 960,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plat_esquerda",
+        "meio": "grama_plat_meio",
+        "direita": "grama_plat_direita"
+        }
+    },
+     {
+      "tipo": "plataforma",
+      "x": 900,
+      "y_offset": -560,
+      "largura": 640,
+      "altura": 64,
+      "solido": true,
+      "sprites": {
+        "esquerda": "grama_plat_esquerda",
+        "meio": "grama_plat_meio",
+        "direita": "grama_plat_direita"
+        }
+    },
+     {
+      "tipo": "plataforma",
+      "x": 1800,
+      "y_offset": -560,
       "largura": 640,
       "altura": 64,
       "solido": true,
