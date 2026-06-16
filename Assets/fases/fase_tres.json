@@ -2,12 +2,16 @@
   "nome": "Fase Três",
   "largura_mundo": 3200,
   "sprites": {
-    "jogador_andar_direita_0": "jogador_andar_direita_0.png",
-    "jogador_andar_direita_1": "jogador_andar_direita_1.png",
-    "jogador_andar_esquerda_0": "jogador_andar_esquerda_0.png",
-    "jogador_andar_esquerda_1": "jogador_andar_esquerda_1.png",
-    "grama_chao_superior": "grama_chao_superior.png",
-    "grama_chao_inferior": "grama_chao_inferior.png",
+    "jogador_andar_direita_0": "capivara/walk1.png",
+    "jogador_andar_direita_1": "capivara/walk2.png",
+    "jogador_andar_direita_2": "capivara/walk3.png",
+    "jogador_andar_direita_3": "capivara/walk4.png",
+    "jogador_andar_esquerda_0": "capivara/walk1.png",
+    "jogador_andar_esquerda_1": "capivara/walk2.png",
+    "jogador_andar_esquerda_2": "capivara/walk3.png",
+    "jogador_andar_esquerda_3": "capivara/walk4.png",
+    "grama_chao_superior": "grama_centro_cima.png",
+    "grama_chao_inferior": "grama_centro_baixo.png",
     "grama_plataforma_ponta_esquerda": "grama_plataforma_ponta_esquerda.png",
     "grama_plataforma_meio": "grama_plataforma_meio.png",
     "grama_plataforma_ponta_direita": "grama_plataforma_ponta_direita.png"
@@ -37,7 +41,7 @@
     },
     {
       "tipo": "plataforma",
-      "x": 1350, "y_offset": -30, "largura": 192, "altura": 64, "solido": true,
+      "x": 1350, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
       "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
     },
     {

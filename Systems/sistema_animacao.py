@@ -19,16 +19,18 @@ class SistemaAnimacao:
                 continue
 
             if fisica:
-                self._definir_estado(anim, fisica)
+                self._definir_estado(anim, fisica, sprite)
 
             self._avancar_frame(anim, sprite)
 
-    def _definir_estado(self, anim, fisica):
+    def _definir_estado(self, anim, fisica, sprite):
         """Escolhe a animação com base na velocidade e direção do jogador."""
         if fisica.vel_x > 0:
             novo_estado = "andar_direita"
+            sprite.flip_x = False
         elif fisica.vel_x < 0:
             novo_estado = "andar_esquerda"
+            sprite.flip_x = True
         else:
             # parado — congela no primeiro frame da última direção
             return

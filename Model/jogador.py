@@ -20,8 +20,11 @@ class Jogador(Entidade):
         # sequências de frames por estado — chaves estão no GerenciadorRecursos
         self.adicionar_componente("animacao", ComponenteAnimacao(
             animacoes={
-                "andar_direita":   ["jogador_andar_direita_0",  "jogador_andar_direita_1"],
-                "andar_esquerda":  ["jogador_andar_esquerda_0", "jogador_andar_esquerda_1"],
+                "andar_direita":  ["jogador_andar_direita_0",  "jogador_andar_direita_1",
+                                "jogador_andar_direita_2",  "jogador_andar_direita_3"],
+                "andar_esquerda": ["jogador_andar_esquerda_0", "jogador_andar_esquerda_1",
+                                "jogador_andar_esquerda_2", "jogador_andar_esquerda_3"],
             },
-            velocidade=8  # troca de sprite a cada 8 frames (~7x por segundo a 60fps)
+            velocidade=8
         ))
+
