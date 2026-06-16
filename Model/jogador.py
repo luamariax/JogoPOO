@@ -26,6 +26,8 @@ class Jogador(Entidade):
                                 "jogador_andar_direita_2",  "jogador_andar_direita_3"],
                 "andar_esquerda": ["jogador_andar_esquerda_0", "jogador_andar_esquerda_1",
                                 "jogador_andar_esquerda_2", "jogador_andar_esquerda_3"],
+                "parado_direita": ["jogador_parado_direita"],
+                "parado_esquerda": ["jogador_parado_esquerda"],
             },
             velocidade=8
         ))

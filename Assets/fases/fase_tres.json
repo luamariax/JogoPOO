@@ -2,6 +2,8 @@
   "nome": "Fase Três",
   "largura_mundo": 3200,
   "sprites": {
+    "jogador_parado_direita": "capivara/idle1.png",
+    "jogador_parado_esquerda": "capivara/idle1.png",
     "jogador_andar_direita_0": "capivara/walk1.png",
     "jogador_andar_direita_1": "capivara/walk2.png",
     "jogador_andar_direita_2": "capivara/walk3.png",
@@ -21,7 +23,14 @@
     "tatu_walk_3": "tatu/tatuwalk4.png",
     "tatu_death_0": "tatu/tatudeath1.png",
     "tatu_death_1": "tatu/tatudeath2.png",
-    "tatu_bye": "tatu/tatubye.png"
+    "tatu_bye": "tatu/tatubye.png",
+    "sapo_pular_0": "sapo/jump1.png",
+    "sapo_pular_1": "sapo/jump2.png",
+    "sapo_pular_2": "sapo/jump3.png",
+    "sapo_pular_3": "sapo/jump4.png",
+    "sapo_pular_4": "sapo/jump5.png",
+    "sapo_pular_5": "sapo/jump6.png",
+    "sapo_bye": "sapo/byebye.png"
   },
   "entidades": [
     {
@@ -74,7 +83,12 @@
     {
     "tipo": "caminhante",
     "x": 400, "y_offset": -200
+    },
+    {
+    "tipo": "saltador",
+    "x": 700, "y_offset": -200
     }
+
 
   ]
 }

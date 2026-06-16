@@ -32,8 +32,7 @@ class SistemaAnimacao:
             novo_estado = "andar_esquerda"
             sprite.flip_x = True
         else:
-            # parado — congela no primeiro frame da última direção
-            return
+            novo_estado = "parado_esquerda" if sprite.flip_x else "parado_direita"
 
         # Só reinicia o frame se trocou de estado
         if novo_estado != anim.estado_atual:
@@ -42,16 +41,15 @@ class SistemaAnimacao:
             anim.contador = 0
 
     def _avancar_frame(self, anim, sprite):
-        """Avança o contador e atualiza a imagem quando necessário."""
+        frames = anim.animacoes.get(anim.estado_atual, [])
+        if not frames:
+            return
+
+        sprite.imagem = GerenciadorRecursos.obter(frames[anim.frame_atual])
+
         anim.contador += 1
         if anim.contador < anim.velocidade:
             return
 
         anim.contador = 0
-        frames = anim.animacoes.get(anim.estado_atual, [])
-        if not frames:
-            return
-
         anim.frame_atual = (anim.frame_atual + 1) % len(frames)
-        chave = frames[anim.frame_atual]
-        sprite.imagem = GerenciadorRecursos.obter(chave)

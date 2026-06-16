@@ -93,7 +93,7 @@ class ControladorJogo:
         self.sistema_fisica.atualizar_y(self.fase.entidades)
         self.sistema_colisao.resolver_colisoes_y(self.jogador, self.fase.plataformas)
         self.sistema_colisao.resolver_colisoes_inimigos_y(self.fase.inimigos, self.fase.plataformas)
-        self.sistema_ia.atualizar(self.fase.inimigos, self.fase.plataformas)
+        self.sistema_ia.atualizar(self.fase.inimigos, self.fase.plataformas, self.jogador)
         self._verificar_pisar_inimigos()
         self.sistema_animacao.atualizar(self.fase.entidades) 
         pos_jog = self.jogador.obter_componente("posicao")
@@ -118,23 +118,26 @@ class ControladorJogo:
         self._atualizar_invencibilidade()
         posicao_jog = self.jogador.obter_componente("posicao")
         fisica_jog = self.jogador.obter_componente("fisica")
-        if not posicao_jog or not fisica_jog or fisica_jog.vel_y <= 0:
+        if not posicao_jog or not fisica_jog or fisica_jog.vel_y < 0:
             return
         rect_jog = pygame.Rect(posicao_jog.rect)
         for inimigo in self.fase.inimigos:
             ia = inimigo.obter_componente("ia")
             posicao_ini = inimigo.obter_componente("posicao")
-            if not ia or not posicao_ini or ia.estado == "voando":
+            if not ia or not posicao_ini or ia.estado in ("voando", "morto"):
                 continue
             rect_ini = pygame.Rect(posicao_ini.rect)
             if rect_jog.colliderect(rect_ini):
-                if rect_jog.bottom - fisica_jog.vel_y <= rect_ini.top + 4:
+                if rect_jog.centery < rect_ini.centery:
                     ia.golpes += 1
                     fisica_jog.vel_y = -6
-                    if ia.golpes >= 2:
-                        ia.estado = "voando"
+                    if ia.tipo == "patrulhar":
+                        if ia.golpes >= 2:
+                            ia.estado = "voando"
+                        else:
+                            ia.estado = "casco"
                     else:
-                        ia.estado = "casco"
+                        ia.estado = "morto"
 
     def _verificar_contato_inimigos(self):
         posicao_jog = self.jogador.obter_componente("posicao")
@@ -148,7 +151,7 @@ class ControladorJogo:
         for inimigo in self.fase.inimigos:
             ia          = inimigo.obter_componente("ia")
             posicao_ini = inimigo.obter_componente("posicao")
-            if not ia or not posicao_ini or ia.estado == "voando":
+            if not ia or not posicao_ini or ia.estado in ("voando", "morto"):
                 continue
             rect_ini = pygame.Rect(posicao_ini.rect)
             if rect_jog.colliderect(rect_ini):

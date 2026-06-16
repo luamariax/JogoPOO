@@ -9,6 +9,7 @@ from Model.Componentes.sprite import ComponenteSprite
 from Model.gerenciador_recursos import GerenciadorRecursos
 from Model.Componentes.item import ComponenteItem
 from Model.Inimigos.caminhante import Caminhante
+from Model.Inimigos.saltador import Saltador
 
 CAMINHO_FASES = "Assets/fases"
 TAMANHO_TILE = 64  # largura de cada tile de plataforma em pixels
@@ -75,6 +76,8 @@ class Fase:
             return [self._criar_item(dado)]
         if tipo == "caminhante":
             return [self._criar_caminhante(dado)]
+        if tipo == "saltador":
+            return [self._criar_saltador(dado)]
         return []
 
     def _criar_chao(self, dado: dict) -> list[Entidade]:
@@ -159,6 +162,12 @@ class Fase:
         x = dado["x"]
         y = self.chao_y + dado["y_offset"]
         return Caminhante(x, y)
+    
+    def _criar_saltador(self, dado: dict) -> Entidade:
+        x = dado["x"]
+        y = self.chao_y + dado["y_offset"]
+        return Saltador(x, y)
+
 
     
 

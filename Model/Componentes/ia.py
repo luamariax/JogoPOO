@@ -9,3 +9,4 @@ class ComponenteIA:
         self.alvo = None        # referência ao jogador quando detectado
         self.estado = "vivo"
         self.golpes = 0
+        self.timer_pulo = 60
