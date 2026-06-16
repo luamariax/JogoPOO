@@ -18,7 +18,7 @@ class SistemaAnimacao:
             if not anim or not sprite:
                 continue
 
-            if fisica:
+            if fisica and not entidade.obter_componente("ia"):
                 self._definir_estado(anim, fisica, sprite)
 
             self._avancar_frame(anim, sprite)

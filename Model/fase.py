@@ -8,6 +8,7 @@ from Model.Componentes.colisao import ComponenteColisao
 from Model.Componentes.sprite import ComponenteSprite
 from Model.gerenciador_recursos import GerenciadorRecursos
 from Model.Componentes.item import ComponenteItem
+from Model.Inimigos.caminhante import Caminhante
 
 CAMINHO_FASES = "Assets/fases"
 TAMANHO_TILE = 64  # largura de cada tile de plataforma em pixels
@@ -19,6 +20,7 @@ class Fase:
         self.jogador = jogador
         self.entidades = []
         self.plataformas = []
+        self.inimigos = []
         self.chao_y = tamanho_tela_y
         self.chao_x = tamanho_tela_x
         self.largura_mundo = tamanho_tela_x   # inicialmente igual à tela
@@ -28,6 +30,10 @@ class Fase:
         col = entidade.obter_componente("colisao")
         if col and col.solido:
             self.plataformas.append(entidade)
+        ia = entidade.obter_componente("ia")
+        if ia:
+            self.inimigos.append(entidade)
+
 
     def carregar(self, nome_arquivo: str):
         caminho = os.path.join(CAMINHO_FASES, nome_arquivo)
@@ -67,6 +73,8 @@ class Fase:
             return self._criar_plataforma(dado)
         if tipo == "item":
             return [self._criar_item(dado)]
+        if tipo == "caminhante":
+            return [self._criar_caminhante(dado)]
         return []
 
     def _criar_chao(self, dado: dict) -> list[Entidade]:
@@ -147,15 +155,10 @@ class Fase:
         e.adicionar_componente("sprite", ComponenteSprite(chave_imagem=dado["sprite"]))
         return e
     
-    
-
-    """def _criar_item(self, dado: dict) -> Entidade:
+    def _criar_caminhante(self, dado: dict) -> Entidade:
         x = dado["x"]
         y = self.chao_y + dado["y_offset"]
-        e = Entidade()
-        e.adicionar_componente("posicao", ComponentePosicao(x, y, dado["largura"], dado["altura"]))
-        e.adicionar_componente("colisao", ComponenteColisao(solido=False, tipo="gatilho"))
-        e.adicionar_componente("sprite", ComponenteSprite(chave_imagem=dado["sprite"]))
-        # NOVO: componente de item
-        e.adicionar_componente("item", ComponenteItem(tipo=dado["tipo_item"], valor=1))
-        return e"""
+        return Caminhante(x, y)
+
+    
+

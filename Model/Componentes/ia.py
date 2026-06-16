@@ -7,3 +7,5 @@ class ComponenteIA:
         self.direcao = 1        # 1 = direita, -1 = esquerda
         self.raio_deteccao = 200
         self.alvo = None        # referência ao jogador quando detectado
+        self.estado = "vivo"
+        self.golpes = 0

@@ -148,9 +148,14 @@ class TelaJogoTeste:
         # Com sprite
         if sprite and sprite.visivel and sprite.imagem:
             imagem = pygame.transform.flip(sprite.imagem, True, False) \
-                     if sprite.flip_x else sprite.imagem
+                    if sprite.flip_x else sprite.imagem
+            vida = entidade.obter_componente("vida")
+            if vida and vida.invencivel and (pygame.time.get_ticks() // 80) % 2 == 0:
+                imagem = imagem.copy()
+                imagem.fill((200, 0, 0, 0), special_flags=pygame.BLEND_RGB_ADD)
             self.superficie.blit(imagem, (pos.x - offset_x, pos.y))
             return
+
 
         # Fallback — retângulo colorido (sem sprite ou sprite não carregado)
         col = entidade.obter_componente("colisao")

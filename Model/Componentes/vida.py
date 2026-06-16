@@ -6,3 +6,4 @@ class ComponenteVida:
         self.hp_max = hp
         self.dano = dano
         self.invencivel = False  # para o flash de dano
+        self.timer_invencivel = 0

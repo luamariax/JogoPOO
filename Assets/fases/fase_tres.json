@@ -14,7 +14,14 @@
     "grama_chao_inferior": "grama_centro_baixo.png",
     "grama_plataforma_ponta_esquerda": "grama_plataforma_ponta_esquerda.png",
     "grama_plataforma_meio": "grama_plataforma_meio.png",
-    "grama_plataforma_ponta_direita": "grama_plataforma_ponta_direita.png"
+    "grama_plataforma_ponta_direita": "grama_plataforma_ponta_direita.png",
+    "tatu_walk_0": "tatu/tatuwalk1.png",
+    "tatu_walk_1": "tatu/tatuwalk2.png",
+    "tatu_walk_2": "tatu/tatuwalk3.png",
+    "tatu_walk_3": "tatu/tatuwalk4.png",
+    "tatu_death_0": "tatu/tatudeath1.png",
+    "tatu_death_1": "tatu/tatudeath2.png",
+    "tatu_bye": "tatu/tatubye.png"
   },
   "entidades": [
     {
@@ -63,6 +70,11 @@
       "tipo": "plataforma",
       "x": 2800, "y_offset": -300, "largura": 256, "altura": 64, "solido": true,
       "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+    "tipo": "caminhante",
+    "x": 400, "y_offset": -200
     }
+
   ]
 }

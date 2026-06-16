@@ -12,6 +12,7 @@ from Systems.sistema_fisica import SistemaFisica
 from Systems.sistema_colisao import SistemaColisao
 from Systems.sistema_camera import SistemaCamera
 from Systems.sistema_animacao import SistemaAnimacao
+from Systems.sistema_ia import SistemaIA
 
 class ControladorJogo:
     def __init__(self):
@@ -24,6 +25,7 @@ class ControladorJogo:
         self.sistema_colisao = SistemaColisao()
         self.sistema_camera = SistemaCamera(self.tela.largura)
         self.sistema_animacao = SistemaAnimacao()
+        self.sistema_ia = SistemaIA()
         self.rodando = True
         self.estado = "menu"          # estados: menu, jogo, pause
         self.fase_atual = 1
@@ -87,8 +89,12 @@ class ControladorJogo:
             return
         self.sistema_fisica.atualizar_x(self.fase.entidades)
         self.sistema_colisao.resolver_colisoes_x(self.jogador, self.fase.plataformas)
+        self.sistema_colisao.resolver_colisoes_inimigos_x(self.fase.inimigos, self.fase.plataformas)
         self.sistema_fisica.atualizar_y(self.fase.entidades)
         self.sistema_colisao.resolver_colisoes_y(self.jogador, self.fase.plataformas)
+        self.sistema_colisao.resolver_colisoes_inimigos_y(self.fase.inimigos, self.fase.plataformas)
+        self.sistema_ia.atualizar(self.fase.inimigos, self.fase.plataformas)
+        self._verificar_pisar_inimigos()
         self.sistema_animacao.atualizar(self.fase.entidades) 
         pos_jog = self.jogador.obter_componente("posicao")
         self.sistema_camera.atualizar(self.camera, pos_jog)
@@ -106,6 +112,59 @@ class ControladorJogo:
                     if item.tipo == "moeda":
                         self.moedas += item.valor
                         print(f"Moeda coletada! Total: {self.moedas}")
+
+    def _verificar_pisar_inimigos(self):
+        self._verificar_contato_inimigos()
+        self._atualizar_invencibilidade()
+        posicao_jog = self.jogador.obter_componente("posicao")
+        fisica_jog = self.jogador.obter_componente("fisica")
+        if not posicao_jog or not fisica_jog or fisica_jog.vel_y <= 0:
+            return
+        rect_jog = pygame.Rect(posicao_jog.rect)
+        for inimigo in self.fase.inimigos:
+            ia = inimigo.obter_componente("ia")
+            posicao_ini = inimigo.obter_componente("posicao")
+            if not ia or not posicao_ini or ia.estado == "voando":
+                continue
+            rect_ini = pygame.Rect(posicao_ini.rect)
+            if rect_jog.colliderect(rect_ini):
+                if rect_jog.bottom - fisica_jog.vel_y <= rect_ini.top + 4:
+                    ia.golpes += 1
+                    fisica_jog.vel_y = -6
+                    if ia.golpes >= 2:
+                        ia.estado = "voando"
+                    else:
+                        ia.estado = "casco"
+
+    def _verificar_contato_inimigos(self):
+        posicao_jog = self.jogador.obter_componente("posicao")
+        fisica_jog  = self.jogador.obter_componente("fisica")
+        vida_jog    = self.jogador.obter_componente("vida")
+        if not posicao_jog or not fisica_jog or not vida_jog:
+            return
+        if vida_jog.invencivel:
+            return
+        rect_jog = pygame.Rect(posicao_jog.rect)
+        for inimigo in self.fase.inimigos:
+            ia          = inimigo.obter_componente("ia")
+            posicao_ini = inimigo.obter_componente("posicao")
+            if not ia or not posicao_ini or ia.estado == "voando":
+                continue
+            rect_ini = pygame.Rect(posicao_ini.rect)
+            if rect_jog.colliderect(rect_ini):
+                foi_pisar = rect_jog.centery < rect_ini.centery
+                if not foi_pisar:
+                    vida_jog.hp -= 1
+                    vida_jog.invencivel = True
+                    vida_jog.timer_invencivel = 90
+
+    def _atualizar_invencibilidade(self):
+        vida_jog = self.jogador.obter_componente("vida")
+        if vida_jog and vida_jog.invencivel:
+            vida_jog.timer_invencivel -= 1
+            if vida_jog.timer_invencivel <= 0:
+                vida_jog.invencivel = False
+
 
     def executar(self):
         while self.rodando:

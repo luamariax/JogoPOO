@@ -52,6 +52,57 @@ class SistemaColisao:
                     fisica.vel_y = 0
                 rect_jog.topleft = (posicao_jog.x, posicao_jog.y)
 
+    def resolver_colisoes_inimigos_x(self, inimigos, plataformas):
+        for inimigo in inimigos:
+            posicao = inimigo.obter_componente("posicao")
+            fisica = inimigo.obter_componente("fisica")
+            ia = inimigo.obter_componente("ia")
+            if not posicao or not fisica:
+                continue
+            rect = pygame.Rect(posicao.rect)
+            candidatas = self._broad_phase(rect, plataformas)
+            for plat in candidatas:
+                posicao_plat = plat.obter_componente("posicao")
+                if not posicao_plat:
+                    continue
+                rect_plat = pygame.Rect(posicao_plat.rect)
+                if rect.colliderect(rect_plat):
+                    if rect.centerx < rect_plat.centerx:
+                        posicao.x = rect_plat.left - rect.width
+                        if ia:
+                            ia.direcao = -1
+                    else:
+                        posicao.x = rect_plat.right
+                        if ia:
+                            ia.direcao = 1
+                    fisica.vel_x = 0
+                    rect.topleft = (posicao.x, posicao.y)
+
+    def resolver_colisoes_inimigos_y(self, inimigos, plataformas):
+        for inimigo in inimigos:
+            posicao = inimigo.obter_componente("posicao")
+            fisica = inimigo.obter_componente("fisica")
+            if not posicao or not fisica:
+                continue
+            fisica.no_chao = False
+            rect = pygame.Rect(posicao.rect)
+            candidatas = self._broad_phase(rect, plataformas)
+            for plat in candidatas:
+                posicao_plat = plat.obter_componente("posicao")
+                if not posicao_plat:
+                    continue
+                rect_plat = pygame.Rect(posicao_plat.rect)
+                if rect.colliderect(rect_plat):
+                    if fisica.vel_y >= 0:
+                        posicao.y = rect_plat.top - rect.height
+                        fisica.vel_y = 0
+                        fisica.no_chao = True
+                    else:
+                        posicao.y = rect_plat.bottom
+                        fisica.vel_y = 0
+                    rect.topleft = (posicao.x, posicao.y)
+
+
     def _broad_phase(self, rect_jog, plataformas):
         zona = rect_jog.inflate(MARGEM_BROAD_PHASE * 2, MARGEM_BROAD_PHASE * 2)
         return [
