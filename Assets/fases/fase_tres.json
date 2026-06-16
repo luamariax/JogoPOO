@@ -1,0 +1,64 @@
+{
+  "nome": "Fase Três",
+  "largura_mundo": 3200,
+  "sprites": {
+    "jogador_andar_direita_0": "jogador_andar_direita_0.png",
+    "jogador_andar_direita_1": "jogador_andar_direita_1.png",
+    "jogador_andar_esquerda_0": "jogador_andar_esquerda_0.png",
+    "jogador_andar_esquerda_1": "jogador_andar_esquerda_1.png",
+    "grama_chao_superior": "grama_chao_superior.png",
+    "grama_chao_inferior": "grama_chao_inferior.png",
+    "grama_plataforma_ponta_esquerda": "grama_plataforma_ponta_esquerda.png",
+    "grama_plataforma_meio": "grama_plataforma_meio.png",
+    "grama_plataforma_ponta_direita": "grama_plataforma_ponta_direita.png"
+  },
+  "entidades": [
+    {
+      "tipo": "chao",
+      "y_offset": -130,
+      "largura": 3200,
+      "solido": true,
+      "sprites_camadas": ["grama_chao_superior", "grama_chao_inferior", "grama_chao_inferior"]
+    },
+    {
+      "tipo": "plataforma",
+      "x": 350, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 700, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 1000, "y_offset": -500, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 1350, "y_offset": -30, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 1700, "y_offset": -500, "largura": 256, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 2100, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 2450, "y_offset": -500, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 2800, "y_offset": -300, "largura": 256, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    }
+  ]
+}

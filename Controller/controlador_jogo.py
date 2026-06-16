@@ -18,9 +18,9 @@ class ControladorJogo:
         self.tela = TelaJogoTeste()   # <== MUDE AQUI!
         self.jogador = Jogador(x=100, y=self.tela.altura - 600)
         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
-        self.fase.carregar("fase_dois.json")
+        self.fase.carregar("fase_tres.json")
         self.camera = ComponenteCamera()
-        self.sistema_fisica = SistemaFisica(gravidade=0.5)
+        self.sistema_fisica = SistemaFisica(gravidade=0.4)
         self.sistema_colisao = SistemaColisao()
         self.sistema_camera = SistemaCamera(self.tela.largura)
         self.sistema_animacao = SistemaAnimacao()
@@ -42,7 +42,7 @@ class ControladorJogo:
                     if evento.key == pygame.K_RETURN:
                         self.jogador = Jogador(x=100, y=self.tela.altura - 200)
                         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
-                        self.fase.carregar("fase_dois.json")
+                        self.fase.carregar("fase_tres.json")
                         self.camera = ComponenteCamera()
                         self.estado = "jogo"
                     elif evento.key == pygame.K_ESCAPE:
@@ -85,13 +85,11 @@ class ControladorJogo:
     def atualizar_jogo(self):
         if self.estado != "jogo":
             return
-        # Aplica física em todas entidades (inclui jogador e possíveis inimigos futuros)
-        self.sistema_fisica.atualizar(self.fase.entidades)
-        # Resolve colisão do jogador com plataformas
-        self.sistema_colisao.resolver_colisoes(self.jogador, self.fase.plataformas)
-        #Atualiza a sprite de movimento
+        self.sistema_fisica.atualizar_x(self.fase.entidades)
+        self.sistema_colisao.resolver_colisoes_x(self.jogador, self.fase.plataformas)
+        self.sistema_fisica.atualizar_y(self.fase.entidades)
+        self.sistema_colisao.resolver_colisoes_y(self.jogador, self.fase.plataformas)
         self.sistema_animacao.atualizar(self.fase.entidades) 
-        # Atualiza câmera
         pos_jog = self.jogador.obter_componente("posicao")
         self.sistema_camera.atualizar(self.camera, pos_jog)
 

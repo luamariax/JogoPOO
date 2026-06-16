@@ -42,6 +42,10 @@ class Fase:
         sprites_dict = dados.get("sprites", {})
         GerenciadorRecursos.carregar_lote(sprites_dict, tamanho_padrao=(TAMANHO_TILE, TAMANHO_TILE))
 
+        # Descobre o tamanho do mundo primeiro pra poder criar o chão
+        if "largura_mundo" in dados:
+            self.largura_mundo = dados["largura_mundo"]
+
         # 2. Cria as entidades (chão, plataformas, itens)
         for dado in dados["entidades"]:
             entidades_criadas = self._criar_entidade(dado)
@@ -54,9 +58,6 @@ class Fase:
         # 4. Adiciona o jogador (já existente)
         self.entidades.append(self.jogador)
 
-        # Após carregar dados, verifica se há largura_mundo definida
-        if "largura_mundo" in dados:
-            self.largura_mundo = dados["largura_mundo"]
 
     def _criar_entidade(self, dado: dict) -> list[Entidade]:
         tipo = dado.get("tipo")
