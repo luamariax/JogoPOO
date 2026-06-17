@@ -30,7 +30,10 @@
     "sapo_pular_3": "sapo/jump4.png",
     "sapo_pular_4": "sapo/jump5.png",
     "sapo_pular_5": "sapo/jump6.png",
-    "sapo_bye": "sapo/byebye.png"
+    "sapo_bye": "sapo/byebye.png",
+    "abelha_voar_0": "jogador_andar_direita_0.png",
+    "abelha_voar_1": "jogador_andar_direita_1.png"
+
   },
   "entidades": [
     {
@@ -87,6 +90,10 @@
     {
     "tipo": "saltador",
     "x": 700, "y_offset": -200
+    },
+    {
+    "tipo": "voador",
+    "x": 550, "y_offset": -350
     }
 
 

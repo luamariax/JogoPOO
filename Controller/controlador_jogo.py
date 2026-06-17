@@ -128,7 +128,7 @@ class ControladorJogo:
                 continue
             rect_ini = pygame.Rect(posicao_ini.rect)
             if rect_jog.colliderect(rect_ini):
-                if rect_jog.centery < rect_ini.centery:
+                if rect_jog.centery <= rect_ini.centery:
                     ia.golpes += 1
                     fisica_jog.vel_y = -6
                     if ia.tipo == "patrulhar":
@@ -155,7 +155,7 @@ class ControladorJogo:
                 continue
             rect_ini = pygame.Rect(posicao_ini.rect)
             if rect_jog.colliderect(rect_ini):
-                foi_pisar = rect_jog.centery < rect_ini.centery
+                foi_pisar = rect_jog.centery <= rect_ini.centery
                 if not foi_pisar:
                     vida_jog.hp -= 1
                     vida_jog.invencivel = True

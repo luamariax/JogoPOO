@@ -14,6 +14,8 @@ class SistemaIA:
                 self._atualizar_caminhante(inimigo, ia, plataformas)
             elif ia.tipo == "pular":
                 self._atualizar_saltador(inimigo, ia, jogador)
+            elif ia.tipo == "voar":
+                self._atualizar_voador(inimigo, ia)
 
     def _atualizar_caminhante(self, inimigo, ia, plataformas):
         posicao = inimigo.obter_componente("posicao")
@@ -87,6 +89,27 @@ class SistemaIA:
                 anim.estado_atual = "pular"
                 anim.frame_atual = 0
                 anim.contador = 0
+
+    def _atualizar_voador(self, inimigo, ia):
+        posicao = inimigo.obter_componente("posicao")
+        fisica  = inimigo.obter_componente("fisica")
+        sprite  = inimigo.obter_componente("sprite")
+        if not posicao or not fisica or not sprite:
+            return
+
+        if ia.estado == "morto":
+            fisica.vel_x = 0
+            fisica.vel_y = 0
+            sprite.visivel = False
+            return
+
+        ia.timer_pulo -= 1
+        if ia.timer_pulo <= 0:
+            ia.timer_pulo = 120
+            ia.direcao *= -1
+
+        fisica.vel_x = ia.velocidade * ia.direcao
+        sprite.flip_x = (ia.direcao == -1)
 
 
     def _borda_a_frente(self, posicao, ia, plataformas) -> bool:

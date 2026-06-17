@@ -27,6 +27,7 @@ class TelaJogoTeste:
         self.fonte_pequena = pygame.font.SysFont("serif", 22)
         #imagem de fundo
         self.background = self.carregar_background()
+        self.background_dia = self.carregar_background_dia()
         #tamanho botões
         posicao_x_botao = self.largura // 2 -130
         posicao_y_botao = self.altura // 2 
@@ -38,26 +39,40 @@ class TelaJogoTeste:
     # Utitlidades para criar o fundo e desenhar os botões
     # ------------------------------------------------------------------
     def carregar_background(self):
-        caminho = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "Assets",
-            "background_pampulha1.jpg"
-        )
-
-        caminho = os.path.abspath(caminho)
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "background_pampulha1.jpg"
+        ))
 
         if os.path.exists(caminho):
             img = pygame.image.load(caminho).convert()
             return pygame.transform.scale(img, (self.largura, self.altura))
 
         return None
+    
+    def carregar_background_dia(self):
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "fundodia.png"
+        ))
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            proporcao = img.get_width() / img.get_height()
+            nova_largura = int(self.altura * proporcao)
+            return pygame.transform.scale(img, (nova_largura, self.altura))
+        return None
 
-    def desenhar_fundo(self, cor):
-        if self.background:
+    def desenhar_fundo(self, cor, offset_x=None):
+        if offset_x is not None and self.background_dia:
+            larg = self.background_dia.get_width()
+            inicio = -(offset_x % larg)
+            x = inicio
+            while x < self.largura:
+                self.superficie.blit(self.background_dia, (x, 0))
+                x += larg
+        elif self.background:
             self.superficie.blit(self.background, (0, 0))
         else:
             self.superficie.fill(cor)
+
 
     def desenhar_botao(self, rect, texto):
         mouse = pygame.mouse.get_pos()
@@ -103,8 +118,8 @@ class TelaJogoTeste:
         pygame.display.flip()
 
     def desenhar_jogo(self, entidades: list, camera, hud: dict | None = None):
-        self.superficie.fill(COR_FUNDO)
         offset_x = camera.x if camera else 0
+        self.desenhar_fundo(COR_FUNDO, offset_x)
 
         for entidade in entidades:
             self._desenhar_entidade(entidade, offset_x)
