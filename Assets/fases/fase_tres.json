@@ -38,8 +38,25 @@
   "entidades": [
     {
       "tipo": "chao",
+      "x": 0,
+      "largura" : 800,
       "y_offset": -130,
-      "largura": 3200,
+      "solido": true,
+      "sprites_camadas": ["grama_chao_superior", "grama_chao_inferior", "grama_chao_inferior"]
+    },
+        {
+      "tipo": "chao",
+      "x": 1100,
+      "largura": 600,
+      "y_offset": -130,
+      "solido": true,
+      "sprites_camadas": ["grama_chao_superior", "grama_chao_inferior", "grama_chao_inferior"]
+    },
+        {
+      "tipo": "chao",
+      "x": 2000,
+      "y_offset": -130,
+      "largura": 1200,
       "solido": true,
       "sprites_camadas": ["grama_chao_superior", "grama_chao_inferior", "grama_chao_inferior"]
     },

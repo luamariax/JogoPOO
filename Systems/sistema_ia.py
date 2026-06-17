@@ -100,10 +100,18 @@ class SistemaIA:
         if ia.estado == "morto":
             fisica.vel_x = 0
             fisica.vel_y = 0
-            sprite.visivel = False
+            vida = inimigo.obter_componente("vida")
+            if vida and sprite.visivel:
+                if not vida.invencivel:
+                    vida.invencivel = True
+                    vida.timer_invencivel = 60
+                else:
+                    vida.timer_invencivel -= 1
+                    if vida.timer_invencivel <= 0:
+                        sprite.visivel = False
             return
 
-        ia.timer_pulo -= 1
+        ia.timer_pulo -= 1 
         if ia.timer_pulo <= 0:
             ia.timer_pulo = 120
             ia.direcao *= -1

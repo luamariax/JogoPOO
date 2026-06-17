@@ -159,11 +159,19 @@ class TelaJogoTeste:
 
         if not pos:
             return
+        
+        # não desenha entidades mortas com sprite oculto
+        ia = entidade.obter_componente("ia")
+        if ia and ia.estado == "morto" and sprite and not sprite.visivel:
+            return
+
 
         # Com sprite
         if sprite and sprite.visivel and sprite.imagem:
             imagem = pygame.transform.flip(sprite.imagem, True, False) \
                     if sprite.flip_x else sprite.imagem
+            if imagem.get_size() != (pos.largura, pos.altura):
+                imagem = pygame.transform.scale(imagem, (pos.largura, pos.altura))
             vida = entidade.obter_componente("vida")
             if vida and vida.invencivel and (pygame.time.get_ticks() // 80) % 2 == 0:
                 imagem = imagem.copy()

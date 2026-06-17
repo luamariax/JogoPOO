@@ -107,7 +107,8 @@ class Fase:
             largura_chao = dado.get("largura", self.largura_mundo)
 
         # Itera sobre a largura da tela em passos de TAMANHO_TILE
-        for x in range(0, largura_chao, TAMANHO_TILE):
+        x_inicio = dado.get("x", 0)
+        for x in range(x_inicio, x_inicio + largura_chao, TAMANHO_TILE):
             y_atual = y_base
             for idx, chave_sprite in enumerate(sprites_camadas):
                 tile = Entidade()

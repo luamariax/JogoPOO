@@ -14,7 +14,7 @@ from Model.Componentes.animacao import ComponenteAnimacao
 class Saltador(Entidade):
     def __init__(self, x: float, y: float):
         super().__init__()
-        self.adicionar_componente("posicao", ComponentePosicao(x, y, 64, 64)) #onde está e tamanho
+        self.adicionar_componente("posicao", ComponentePosicao(x, y, 48, 48)) #onde está e tamanho
         self.adicionar_componente("fisica", ComponenteFisica(gravidade=True, no_chao=False))
         self.adicionar_componente("colisao", ComponenteColisao(solido=False, tipo="dano"))
         self.adicionar_componente("vida", ComponenteVida(hp=1))

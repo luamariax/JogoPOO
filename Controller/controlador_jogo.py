@@ -97,7 +97,7 @@ class ControladorJogo:
         self._verificar_pisar_inimigos()
         self.sistema_animacao.atualizar(self.fase.entidades) 
         pos_jog = self.jogador.obter_componente("posicao")
-        self.sistema_camera.atualizar(self.camera, pos_jog)
+        self.sistema_camera.atualizar(self.camera, pos_jog, self.fase.largura_mundo)
 
     def verificar_coleta_itens(self):
         for entidade in self.fase.entidades[:]:  # iterar sobre cópia
@@ -155,11 +155,13 @@ class ControladorJogo:
                 continue
             rect_ini = pygame.Rect(posicao_ini.rect)
             if rect_jog.colliderect(rect_ini):
-                foi_pisar = rect_jog.centery <= rect_ini.centery
+                foi_pisar = rect_jog.bottom <= rect_ini.centery and fisica_jog.vel_y > 0
                 if not foi_pisar:
                     vida_jog.hp -= 1
                     vida_jog.invencivel = True
                     vida_jog.timer_invencivel = 90
+                    if ia.tipo == "voar":
+                        ia.estado = "morto"
 
     def _atualizar_invencibilidade(self):
         vida_jog = self.jogador.obter_componente("vida")
