@@ -28,6 +28,7 @@ class TelaJogoTeste:
         #imagem de fundo
         self.background = self.carregar_background()
         self.background_dia = self.carregar_background_dia()
+        self.background_vitoria = self.carregar_background_vitoria()
         #tamanho botões
         posicao_x_botao = self.largura // 2 -130
         posicao_y_botao = self.altura // 2 
@@ -58,6 +59,15 @@ class TelaJogoTeste:
             proporcao = img.get_width() / img.get_height()
             nova_largura = int(self.altura * proporcao)
             return pygame.transform.scale(img, (nova_largura, self.altura))
+        return None
+    
+    def carregar_background_vitoria(self):
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "background_tela_pause_floresta_a_noite.jpg"
+        ))
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            return pygame.transform.scale(img, (self.largura, self.altura))
         return None
 
     def desenhar_fundo(self, cor, offset_x=None):
@@ -148,6 +158,16 @@ class TelaJogoTeste:
         self._texto_centralizado("ENTER — Tentar novamente", self.fonte_media, COR_TEXTO,  self.altura // 2 + 50)
         self._texto_centralizado("ESC   — Sair",        self.fonte_media,  COR_TEXTO,      self.altura // 2 + 90)
         pygame.display.flip()
+
+    def desenhar_vitoria(self):
+        if self.background_vitoria:
+            self.superficie.blit(self.background_vitoria, (0, 0))
+        else:
+            self.superficie.fill(COR_MENU)
+        self._texto_centralizado("VOCÊ VENCEU!", self.fonte_grande, (50, 220, 100), self.altura // 3)
+        self._texto_centralizado("ENTER ou ESC — Voltar ao menu", self.fonte_media, COR_TEXTO, self.altura // 2 + 50)
+        pygame.display.flip()
+
 
     # ------------------------------------------------------------------
     # Entidade

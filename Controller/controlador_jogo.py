@@ -15,13 +15,16 @@ from Estados.estado_menu import EstadoMenu
 from Estados.estado_jogo import EstadoJogo
 from Estados.estado_pause import EstadoPause
 from Estados.estado_game_over import EstadoGameOver
+from Estados.estado_vitoria import EstadoVitoria
 
 class ControladorJogo:
     def __init__(self):
         self.tela = TelaJogoTeste()  
         self.jogador = Jogador(x=100, y=self.tela.altura - 600)
         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
-        self.fase.carregar("fase_tres.json")
+        self.fases = ["fase_um.json", "fase_dois.json"] # é aqui que iremos adicionar as fases do jogo
+        self.indice_fase = 0
+        self.fase.carregar(self.fases[self.indice_fase])
         self.camera = ComponenteCamera()
         self.sistema_fisica = SistemaFisica(gravidade=0.4)
         self.sistema_colisao = SistemaColisao()
@@ -29,13 +32,13 @@ class ControladorJogo:
         self.sistema_animacao = SistemaAnimacao()
         self.sistema_ia = SistemaIA()
         self.rodando = True
-        self.fase_atual = 1
 
         self._estados = {
             "menu": EstadoMenu(self),
             "jogo": EstadoJogo(self),
             "pause": EstadoPause(self),
-            "game_over": EstadoGameOver(self)
+            "game_over": EstadoGameOver(self),
+            "vitoria": EstadoVitoria(self),
         }
         self.estado_atual = self._estados["menu"]
 
@@ -106,9 +109,41 @@ class ControladorJogo:
                     if ia.tipo == "voar":
                         ia.estado = "morto"
 
+    def _verificar_queda_abismo(self):
+        pos_jog   = self.jogador.obter_componente("posicao")
+        vida_jog  = self.jogador.obter_componente("vida")
+        fisica_jog = self.jogador.obter_componente("fisica")
+        if not pos_jog or not vida_jog or not fisica_jog:
+            return
+        if pos_jog.y > self.tela.altura:
+            vida_jog.hp -= 1
+            if vida_jog.hp <= 0:
+                self.mudar_estado("game_over")
+                return
+            pos_jog.x = 100
+            pos_jog.y = self.tela.altura - 200
+            fisica_jog.vel_x = 0
+            fisica_jog.vel_y = 0
+            vida_jog.invencivel = True
+            vida_jog.timer_invencivel = 90
+            self.camera = ComponenteCamera()
+
+
     def _atualizar_invencibilidade(self):
         vida_jog = self.jogador.obter_componente("vida")
         if vida_jog and vida_jog.invencivel:
             vida_jog.timer_invencivel -= 1
             if vida_jog.timer_invencivel <= 0:
                 vida_jog.invencivel = False
+
+    def proxima_fase(self):
+        self.indice_fase += 1
+        if self.indice_fase >= len(self.fases):
+            self.mudar_estado("vitoria")
+            return
+        self.jogador = Jogador(x=100, y=self.tela.altura - 200)
+        self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
+        self.fase.carregar(self.fases[self.indice_fase])
+        self.camera = ComponenteCamera()
+        self.mudar_estado("jogo")
+        

@@ -1,6 +1,6 @@
 {
-  "nome": "Fase Dois Avançada",
-  "largura_mundo": 1280,
+  "nome": "Fase Três",
+  "largura_mundo": 3200,
   "sprites": {
     "jogador_parado_direita": "Capivara/idle1.png",
     "jogador_parado_esquerda": "Capivara/idle1.png",
@@ -33,79 +33,70 @@
     "sapo_bye": "Sapo/byebye.png",
     "abelha_voar_0": "jogador_andar_direita_0.png",
     "abelha_voar_1": "jogador_andar_direita_1.png"
+
   },
   "entidades": [
     {
       "tipo": "chao",
-      "y_offset": -195,
-      "largura": 6400,
+      "x": 0,
+      "largura" : 800,
+      "y_offset": -130,
       "solido": true,
-      "sprites_camadas": ["piso_grama_0", "piso_grama_1", "piso_grama_2"]
+      "sprites_camadas": ["grama_chao_superior", "grama_chao_inferior", "grama_chao_inferior"]
     },
     {
       "tipo": "plataforma",
-      "x": 600,
-      "y_offset": -380,
-      "largura": 640,
-      "altura": 64,
-      "solido": true,
-      "sprites": {
-        "esquerda": "grama_plat_esquerda",
-        "meio": "grama_plat_meio",
-        "direita": "grama_plat_direita"
-        }
+      "x": 350, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
     },
-     {
+    {
       "tipo": "plataforma",
-      "x": 1500,
-      "y_offset": -380,
-      "largura": 768,
-      "altura": 64,
-      "solido": true,
-      "sprites": {
-        "esquerda": "grama_plat_esquerda",
-        "meio": "grama_plat_meio",
-        "direita": "grama_plat_direita"
-        }
+      "x": 700, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
     },
-     {
+    {
       "tipo": "plataforma",
-      "x": 2500,
-      "y_offset": -380,
-      "largura": 960,
-      "altura": 64,
-      "solido": true,
-      "sprites": {
-        "esquerda": "grama_plat_esquerda",
-        "meio": "grama_plat_meio",
-        "direita": "grama_plat_direita"
-        }
+      "x": 1000, "y_offset": -500, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
     },
-     {
+    {
       "tipo": "plataforma",
-      "x": 900,
-      "y_offset": -560,
-      "largura": 640,
-      "altura": 64,
-      "solido": true,
-      "sprites": {
-        "esquerda": "grama_plat_esquerda",
-        "meio": "grama_plat_meio",
-        "direita": "grama_plat_direita"
-        }
+      "x": 1350, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
     },
-     {
+    {
       "tipo": "plataforma",
-      "x": 1800,
-      "y_offset": -560,
-      "largura": 640,
-      "altura": 64,
-      "solido": true,
-      "sprites": {
-        "esquerda": "grama_plat_esquerda",
-        "meio": "grama_plat_meio",
-        "direita": "grama_plat_direita"
-        }
+      "x": 1700, "y_offset": -500, "largura": 256, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 2100, "y_offset": -300, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 2450, "y_offset": -500, "largura": 192, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+      "tipo": "plataforma",
+      "x": 2800, "y_offset": -300, "largura": 256, "altura": 64, "solido": true,
+      "sprites": { "esquerda": "grama_plataforma_ponta_esquerda", "meio": "grama_plataforma_meio", "direita": "grama_plataforma_ponta_direita" }
+    },
+    {
+    "tipo": "caminhante",
+    "x": 400, "y_offset": -200
+    },
+    {
+    "tipo": "saltador",
+    "x": 700, "y_offset": -200
+    },
+    {
+    "tipo": "voador",
+    "x": 550, "y_offset": -350
     }
-    ]
+
+
+  ]
 }

@@ -22,7 +22,8 @@ class EstadoGameOver(Estado):
         c = self.controlador
         c.jogador = Jogador(x=100, y=c.tela.altura - 200)
         c.fase = Fase(c.jogador, c.tela.altura, c.tela.largura)
-        c.fase.carregar("fase_tres.json")
+        c.indice_fase = 0
+        c.fase.carregar(c.fases[c.indice_fase])
         c.camera = ComponenteCamera()
         c.mudar_estado("jogo")
 

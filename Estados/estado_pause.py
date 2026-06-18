@@ -21,4 +21,4 @@ class EstadoPause(Estado):
                     self.controlador.rodando = False
 
     def desenhar(self):
-        self.controlador.tela.desenhar_pause(self.controlador.fase_atual)
+        self.controlador.tela.desenhar_pause(self.controlador.indice_fase + 1)

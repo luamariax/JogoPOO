@@ -15,4 +15,3 @@ class Estado(ABC):
     def desenhar(self): ...
 
     def atualizar(self): pass
-

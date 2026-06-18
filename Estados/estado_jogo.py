@@ -34,9 +34,12 @@ class EstadoJogo(Estado):
         c.sistema_colisao.resolver_colisoes_inimigos_y(c.fase.inimigos, c.fase.plataformas)
         c.sistema_ia.atualizar(c.fase.inimigos, c.fase.plataformas, c.jogador)
         c._verificar_pisar_inimigos()
+        c._verificar_queda_abismo()
         c.sistema_animacao.atualizar(c.fase.entidades)
         pos_jog = c.jogador.obter_componente("posicao")
         c.sistema_camera.atualizar(c.camera, pos_jog, c.fase.largura_mundo)
+        if pos_jog and pos_jog.x + pos_jog.largura >= c.fase.largura_mundo:
+            c.proxima_fase()
 
     def desenhar(self):
         c = self.controlador
