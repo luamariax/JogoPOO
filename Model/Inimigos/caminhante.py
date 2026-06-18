@@ -22,7 +22,7 @@ class Caminhante(Entidade):
         anim = ComponenteAnimacao(
             animacoes={
                 "andar":  ["tatu_walk_0", "tatu_walk_1", "tatu_walk_2", "tatu_walk_3"],
-                "casco":  ["tatu_death_0", "tatu_death_1"],
+                "casco":  ["tatu_death_1"],
                 "voando": ["tatu_bye"],
             },
             velocidade=8

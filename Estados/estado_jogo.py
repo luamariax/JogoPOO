@@ -3,30 +3,41 @@
 # Transita para EstadoPause ou EstadoGameOver.
 
 import pygame
+from Estados.estado import Estado
+from Controller.controlador_input import ControladorInput
 
-class EstadoJogo:
-    def __init__(self, controlador):
-        self.controlador = controlador
-        self.rodando = True
-
+class EstadoJogo(Estado):
     def entrar(self):
-        print("Entrando no estado de jogo")
+        fisica = self.controlador.jogador.obter_componente("fisica")
+        if fisica:
+            fisica.vel_x = 0
 
-    def sair(self):
-        print("Saindo do estado de jogo")
-
-    def tratar_eventos(self, eventos):
-        for evento in eventos:
+    def processar_eventos(self):
+        for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                self.rodando = False
-
+                self.controlador.rodando = False
+                return
             if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_ESCAPE:
+                if evento.key == pygame.K_p:
                     self.controlador.mudar_estado("pause")
+                elif evento.key == pygame.K_ESCAPE:
+                    self.controlador.rodando = False
+        ControladorInput.processar_teclado(self.controlador.jogador)
 
     def atualizar(self):
-        pass
+        c = self.controlador
+        c.sistema_fisica.atualizar_x(c.fase.entidades)
+        c.sistema_colisao.resolver_colisoes_x(c.jogador, c.fase.plataformas)
+        c.sistema_colisao.resolver_colisoes_inimigos_x(c.fase.inimigos, c.fase.plataformas)
+        c.sistema_fisica.atualizar_y(c.fase.entidades)
+        c.sistema_colisao.resolver_colisoes_y(c.jogador, c.fase.plataformas)
+        c.sistema_colisao.resolver_colisoes_inimigos_y(c.fase.inimigos, c.fase.plataformas)
+        c.sistema_ia.atualizar(c.fase.inimigos, c.fase.plataformas, c.jogador)
+        c._verificar_pisar_inimigos()
+        c.sistema_animacao.atualizar(c.fase.entidades)
+        pos_jog = c.jogador.obter_componente("posicao")
+        c.sistema_camera.atualizar(c.camera, pos_jog, c.fase.largura_mundo)
 
-    def desenhar(self, tela):
-        tela.fill((135, 206, 235))
-        pygame.display.flip()
+    def desenhar(self):
+        c = self.controlador
+        c.tela.desenhar_jogo(c.fase.entidades, c.camera)
