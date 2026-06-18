@@ -13,7 +13,7 @@ class SistemaIA:
             if ia.tipo == "patrulhar":
                 self._atualizar_caminhante(inimigo, ia, plataformas)
             elif ia.tipo == "pular":
-                self._atualizar_saltador(inimigo, ia, jogador)
+                self._atualizar_saltador(inimigo, ia, jogador, plataformas)
             elif ia.tipo == "voar":
                 self._atualizar_voador(inimigo, ia)
 
@@ -49,7 +49,7 @@ class SistemaIA:
                 anim.frame_atual = 0
                 anim.contador = 0
         
-    def _atualizar_saltador(self, inimigo, ia, jogador):
+    def _atualizar_saltador(self, inimigo, ia, jogador, plataformas):
         posicao = inimigo.obter_componente("posicao")
         fisica  = inimigo.obter_componente("fisica")
         anim    = inimigo.obter_componente("animacao")
@@ -81,6 +81,8 @@ class SistemaIA:
                             ia.timer_pulo = 5
                             direcao = 1 if pos_jog.x > posicao.x else -1
                             ia.direcao = direcao
+                            if self._borda_a_frente(posicao, ia, plataformas):
+                                return
                             sprite.flip_x = (direcao == -1)
                             fisica.vel_x = ia.velocidade * direcao
                             fisica.vel_y = -10

@@ -2,7 +2,7 @@
 # Não sabe quando trocar — os estados é que decidem isso. Ele só sabe como trocar.
 import pygame
 
-from View.tela_jogo_teste import TelaJogoTeste # TELA TESTE
+from View.tela_jogo import TelaJogo
 from Model.jogador import Jogador
 from Model.fase import Fase
 from Model.Componentes.camera import ComponenteCamera
@@ -19,7 +19,7 @@ from Estados.estado_vitoria import EstadoVitoria
 
 class ControladorJogo:
     def __init__(self):
-        self.tela = TelaJogoTeste()  
+        self.tela = TelaJogo()  
         self.jogador = Jogador(x=100, y=self.tela.altura - 600)
         self.fase = Fase(self.jogador, self.tela.altura, self.tela.largura)
         self.fases = ["fase_um.json", "fase_dois.json"] # é aqui que iremos adicionar as fases do jogo

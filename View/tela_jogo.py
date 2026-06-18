@@ -1,53 +1,98 @@
+# view/tela_jogo.py
 import pygame
+from Model.gerenciador_recursos import GerenciadorRecursos
 import sys
 import os
 
+COR_FUNDO    = (135, 206, 235)   # azul escuro — céu noturno
+COR_MENU     = (20, 20, 40)
+COR_TEXTO    = (255, 255, 255)
+COR_PAUSE    = (0, 0, 0, 150) # semi-transparente
+
 
 class TelaJogo:
+    """Inicializa pygame e desenha o estado atual do jogo."""
+
     def __init__(self):
         pygame.init()
-
-        self.largura = 900
-        self.altura = 600
-
-        self.janela = pygame.display.set_mode((self.largura, self.altura))
-        pygame.display.set_caption("JOGOPOO")
-
+        info = pygame.display.Info()
+        self.largura = info.current_w
+        self.altura = info.current_h - 80
+        self.superficie = pygame.display.set_mode((self.largura, self.altura))
+        pygame.display.set_caption("JOGO_APPOO")
         self.clock = pygame.time.Clock()
-
-        self.estado = "menu"
-        self.fase = 1
-
-        self.background = self.carregar_background()
-
-        self.fonte_titulo = pygame.font.SysFont("serif", 64, bold=True)
-        self.fonte_texto = pygame.font.SysFont("serif", 28, bold=True)
+        #escrita
+        self.fonte_grande = pygame.font.SysFont("serif", 64, bold=True)
+        self.fonte_media  = pygame.font.SysFont("serif", 28, bold=True)
         self.fonte_pequena = pygame.font.SysFont("serif", 22)
+        #imagem de fundo
+        self.background = self.carregar_background()
+        self.background_dia = self.carregar_background_dia()
+        self.background_vitoria = self.carregar_background_vitoria()
+        self.background_game_over = self.carregar_background_game_over()
+        #tamanho botões
+        posicao_x_botao = self.largura // 2 -130
+        posicao_y_botao = self.altura // 2 
+        self.btn_continuar = pygame.Rect(posicao_x_botao, posicao_y_botao, 260, 55)
+        self.btn_novo_jogo = pygame.Rect(posicao_x_botao, posicao_y_botao+60, 260, 55)
 
-        self.btn_continuar = pygame.Rect(320, 330, 260, 55)
-        self.btn_novo_jogo = pygame.Rect(320, 400, 260, 55)
 
+    # ------------------------------------------------------------------
+    # Utitlidades para criar o fundo e desenhar os botões
+    # ------------------------------------------------------------------
     def carregar_background(self):
-        caminho = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "Assets",
-            "background_pampulha1.jpg"
-        )
-
-        caminho = os.path.abspath(caminho)
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "background_pampulha1.jpg"
+        ))
 
         if os.path.exists(caminho):
             img = pygame.image.load(caminho).convert()
             return pygame.transform.scale(img, (self.largura, self.altura))
 
         return None
+    
+    def carregar_background_dia(self):
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "fundodia.png"
+        ))
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            proporcao = img.get_width() / img.get_height()
+            nova_largura = int(self.altura * proporcao)
+            return pygame.transform.scale(img, (nova_largura, self.altura))
+        return None
+    
+    def carregar_background_vitoria(self):
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "background_vitoria.jpg"
+        ))
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            return pygame.transform.scale(img, (self.largura, self.altura))
+        return None
+    
+    def carregar_background_game_over(self):
+        caminho = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..", "Assets", "background_tela_pause_floresta_a_noite.jpg"
+        ))
+        if os.path.exists(caminho):
+            img = pygame.image.load(caminho).convert()
+            return pygame.transform.scale(img, (self.largura, self.altura))
+        return None
 
-    def desenhar_fundo(self, cor):
-        if self.background:
-            self.janela.blit(self.background, (0, 0))
+    def desenhar_fundo(self, cor, offset_x=None):
+        if offset_x is not None and self.background_dia:
+            larg = self.background_dia.get_width()
+            inicio = -(offset_x % larg)
+            x = inicio
+            while x < self.largura:
+                self.superficie.blit(self.background_dia, (x, 0))
+                x += larg
+        elif self.background:
+            self.superficie.blit(self.background, (0, 0))
         else:
-            self.janela.fill(cor)
+            self.superficie.fill(cor)
+
 
     def desenhar_botao(self, rect, texto):
         mouse = pygame.mouse.get_pos()
@@ -57,30 +102,32 @@ class TelaJogo:
         else:
             cor = (70, 140, 50)
 
-        pygame.draw.rect(self.janela, cor, rect, border_radius=6)
-        pygame.draw.rect(self.janela, (220, 240, 180), rect, 2, border_radius=6)
+        pygame.draw.rect(self.superficie, cor, rect, border_radius=6)
+        pygame.draw.rect(self.superficie, (220, 240, 180), rect, 2, border_radius=6)
 
-        label = self.fonte_texto.render(texto, True, (255, 255, 255))
+        label = self.fonte_media.render(texto, True, (255, 255, 255))
         x = rect.centerx - label.get_width() // 2
         y = rect.centery - label.get_height() // 2
-        self.janela.blit(label, (x, y))
+        self.superficie.blit(label, (x, y))
+
+
+    # ------------------------------------------------------------------
+    # Desenho por estado
+    # ------------------------------------------------------------------
 
     def desenhar_menu(self):
         self.desenhar_fundo((30, 120, 40))
 
-        titulo1 = self.fonte_titulo.render("Floresta", True, (245, 232, 192))
-        titulo2 = self.fonte_titulo.render("Ancestral", True, (245, 232, 192))
+        titulo1 = self.fonte_grande.render("Floresta", True, (245, 232, 192))
+        titulo2 = self.fonte_grande.render("Ancestral", True, (245, 232, 192))
 
-        self.janela.blit(titulo1, (self.largura // 2 - titulo1.get_width() // 2, 120))
-        self.janela.blit(titulo2, (self.largura // 2 - titulo2.get_width() // 2, 190))
+        self.superficie.blit(titulo1, (self.largura // 2 - titulo1.get_width() // 2, 120))
+        self.superficie.blit(titulo2, (self.largura // 2 - titulo2.get_width() // 2, 190))
 
-        subtitulo = self.fonte_pequena = pygame.font.SysFont("Times New Roman", 26, bold=True)(
-            "A JORNADA DA CAPIVARA",
-            True,
-            (184, 216, 154)
-        )
+        fonte_sub = pygame.font.SysFont("Times New Roman", 26, bold=True)
+        subtitulo = fonte_sub.render("A JORNADA DA CAPIVARA", True, (184, 216, 154))
 
-        self.janela.blit(
+        self.superficie.blit(
             subtitulo,
             (self.largura // 2 - subtitulo.get_width() // 2, 275)
         )
@@ -90,109 +137,137 @@ class TelaJogo:
 
         pygame.display.flip()
 
-    def processar_menu(self, evento):
-        if self.estado != "menu":
-            return
+    def desenhar_jogo(self, entidades: list, camera, hud: dict | None = None):
+        offset_x = camera.x if camera else 0
+        self.desenhar_fundo(COR_FUNDO, offset_x)
 
-        if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-            mouse = pygame.mouse.get_pos()
+        for entidade in entidades:
+            self._desenhar_entidade(entidade, offset_x)
 
-            if self.btn_continuar.collidepoint(mouse):
-                self.estado = "jogando"
-
-            if self.btn_novo_jogo.collidepoint(mouse):
-                self.estado = "jogando"
-                self.fase = 1
-
-    def desenhar_jogador(self, jogador):
-        pos = jogador.obter("posicao")
-
-        if pos:
-            pygame.draw.rect(
-                self.janela,
-                (255, 220, 0),
-                (pos.x, pos.y, pos.largura, pos.altura)
-            )
-
-    def desenhar_fase1(self, jogador):
-        self.desenhar_fundo((70, 160, 70))
-
-        texto = self.fonte_pequena.render(
-            "FASE 1 - Movimento simples",
-            True,
-            (255, 255, 255)
-        )
-        self.janela.blit(texto, (20, 20))
-
-        self.desenhar_jogador(jogador)
-
-    def desenhar_fase2(self, jogador):
-        self.desenhar_fundo((50, 120, 170))
-
-        texto = self.fonte_pequena.render(
-            "FASE 2 - Plataformas e pulo",
-            True,
-            (255, 255, 255)
-        )
-        self.janela.blit(texto, (20, 20))
-
-        pygame.draw.rect(self.janela, (100, 70, 40), (0, 520, 900, 80))
-        pygame.draw.rect(self.janela, (100, 70, 40), (250, 400, 180, 25))
-        pygame.draw.rect(self.janela, (100, 70, 40), (550, 320, 180, 25))
-
-        self.desenhar_jogador(jogador)
-
-    def desenhar_fase3(self, jogador):
-        self.desenhar_fundo((80, 40, 40))
-
-        texto = self.fonte_pequena.render(
-            "FASE 3 - Inimigos e desafio final",
-            True,
-            (255, 255, 255)
-        )
-        self.janela.blit(texto, (20, 20))
-
-        pygame.draw.rect(self.janela, (100, 70, 40), (0, 520, 900, 80))
-
-        pygame.draw.rect(self.janela, (200, 0, 0), (500, 470, 50, 50))
-        pygame.draw.rect(self.janela, (200, 0, 0), (700, 470, 50, 50))
-
-        self.desenhar_jogador(jogador)
-
-    def desenhar_game_over(self):
-        self.janela.fill((20, 20, 20))
-
-        texto = self.fonte_titulo.render("GAME OVER", True, (220, 40, 40))
-        self.janela.blit(
-            texto,
-            (self.largura // 2 - texto.get_width() // 2, 240)
-        )
+        if hud:
+            self._desenhar_hud(hud)
 
         pygame.display.flip()
 
-    def desenhar(self, jogador):
-        if self.estado == "menu":
-            self.desenhar_menu()
-            return
+    def desenhar_pause(self, fase_atual: int = 1):
+        # Overlay semi-transparente sobre o frame atual
+        overlay = pygame.Surface((self.largura, self.altura), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 160))
+        self.superficie.blit(overlay, (0, 0))
 
-        if self.estado == "game_over":
-            self.desenhar_game_over()
-            return
-
-        if self.fase == 1:
-            self.desenhar_fase1(jogador)
-
-        elif self.fase == 2:
-            self.desenhar_fase2(jogador)
-
-        elif self.fase == 3:
-            self.desenhar_fase3(jogador)
-
+        self._texto_centralizado("PAUSADO",          self.fonte_grande, COR_TEXTO, self.altura // 3)
+        self._texto_centralizado(f"Fase {fase_atual}", self.fonte_media, COR_TEXTO, self.altura // 2)
+        self._texto_centralizado("P — Continuar",    self.fonte_media,  COR_TEXTO, self.altura // 2 + 40)
+        self._texto_centralizado("ESC — Sair",       self.fonte_media,  COR_TEXTO, self.altura // 2 + 80)
         pygame.display.flip()
 
-    def tick(self, fps):
+    def desenhar_game_over(self, pontuacao: int = 0):
+        if self.background_game_over:
+            self.superficie.blit(self.background_game_over, (0, 0))
+        else:
+            self.superficie.fill(COR_MENU)
+        self._texto_centralizado("GAME OVER",           self.fonte_grande, (220, 50, 50),  self.altura // 3)
+        self._texto_centralizado(f"Pontos: {pontuacao}", self.fonte_media,  COR_TEXTO,      self.altura // 2)
+        self._texto_centralizado("ENTER — Tentar novamente", self.fonte_media, COR_TEXTO,  self.altura // 2 + 50)
+        self._texto_centralizado("ESC   — Sair",        self.fonte_media,  COR_TEXTO,      self.altura // 2 + 90)
+        pygame.display.flip()
+
+    def desenhar_vitoria(self):
+        if self.background_vitoria:
+            self.superficie.blit(self.background_vitoria, (0, 0))
+        else:
+            self.superficie.fill(COR_MENU)
+        self._texto_centralizado("VOCÊ VENCEU!", self.fonte_grande, (50, 220, 100), self.altura // 3)
+        self._texto_centralizado("ENTER ou ESC — Voltar ao menu", self.fonte_media, COR_TEXTO, self.altura // 2 + 50)
+        pygame.display.flip()
+
+
+    # ------------------------------------------------------------------
+    # Entidade
+    # ------------------------------------------------------------------
+
+    def _desenhar_entidade(self, entidade, offset_x: int):
+        pos    = entidade.obter_componente("posicao")
+        sprite = entidade.obter_componente("sprite")
+
+        if not pos:
+            return
+        
+        # não desenha entidades mortas com sprite oculto
+        ia = entidade.obter_componente("ia")
+        if ia and ia.estado == "morto" and sprite and not sprite.visivel:
+            return
+
+
+        # Com sprite
+        if sprite and sprite.visivel and sprite.imagem:
+            imagem = pygame.transform.flip(sprite.imagem, True, False) \
+                    if sprite.flip_x else sprite.imagem
+            if imagem.get_size() != (pos.largura, pos.altura):
+                imagem = pygame.transform.scale(imagem, (pos.largura, pos.altura))
+            vida = entidade.obter_componente("vida")
+            if vida and vida.invencivel and (pygame.time.get_ticks() // 80) % 2 == 0:
+                imagem = imagem.copy()
+                imagem.fill((200, 0, 0, 0), special_flags=pygame.BLEND_RGB_ADD)
+            self.superficie.blit(imagem, (pos.x - offset_x, pos.y))
+            return
+
+
+        # Fallback — retângulo colorido (sem sprite ou sprite não carregado)
+        col = entidade.obter_componente("colisao")
+        cor = self._cor_fallback(col)
+        pygame.draw.rect(self.superficie, cor,
+                         (pos.x - offset_x, pos.y, pos.largura, pos.altura))
+
+    def _cor_fallback(self, col) -> tuple:
+        """Cor do retângulo de fallback com base no tipo de colisão."""
+        if not col:
+            return (200, 200, 200)
+        return {
+            "normal":   (100, 180, 100),  # verde — plataforma
+            "dano":     (220,  60,  60),  # vermelho — inimigo
+            "gatilho":  (255, 220,   0),  # amarelo — item
+        }.get(col.tipo, (200, 200, 200))
+
+    # ------------------------------------------------------------------
+    # HUD
+    # ------------------------------------------------------------------
+
+    def _desenhar_hud(self, hud: dict):
+        """
+        hud esperado:
+        {
+            "vidas": 3,
+            "moedas": 7,
+            "fase": 1
+        }
+        """
+        padding = 10
+        self._texto(f"♥ {hud.get('vidas', 0)}",  self.fonte_media, (220, 60, 60),  (padding, padding))
+        self._texto(f"● {hud.get('moedas', 0)}", self.fonte_media, (255, 220, 0),  (padding, padding + 35))
+        fase_txt = self.fonte_pequena.render(f"Fase {hud.get('fase', 1)}", True, COR_TEXTO)
+        self.superficie.blit(fase_txt, (self.largura - fase_txt.get_width() - padding, padding))
+
+    # ------------------------------------------------------------------
+    # Utilitários de texto
+    # ------------------------------------------------------------------
+
+    def _texto_centralizado(self, texto: str, fonte, cor: tuple, y: int):
+        surface = fonte.render(texto, True, cor)
+        x = (self.largura - surface.get_width()) // 2
+        self.superficie.blit(surface, (x, y))
+
+    def _texto(self, texto: str, fonte, cor: tuple, pos: tuple):
+        surface = fonte.render(texto, True, cor)
+        self.superficie.blit(surface, pos)
+
+    # ------------------------------------------------------------------
+    # Controle do loop
+    # ------------------------------------------------------------------
+
+    def tick(self, fps: int = 60):
         self.clock.tick(fps)
 
     def fechar(self):
-        pygame.quit()
         sys.exit()
+        pygame.quit()
