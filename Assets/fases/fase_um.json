@@ -102,19 +102,19 @@
     },
     {
     "tipo": "caminhante",
-    "x": 400, "y_offset": -200
-    },
-    {
-    "tipo": "caminhante",
     "x": 1090, "y_offset": -500
     },
     {
     "tipo": "caminhante",
-    "x": 2500, "y_offset": -500
+    "x": 2590, "y_offset": -500
+    },
+    {
+    "tipo": "caminhante",
+    "x": 2850, "y_offset": -500
     },
     {
     "tipo": "saltador",
-    "x": 700, "y_offset": -200
+    "x": 600, "y_offset": -200
     },
     {
     "tipo": "saltador",
@@ -126,7 +126,7 @@
     },
     {
     "tipo": "voador",
-    "x": 550, "y_offset": -350
+    "x": 550, "y_offset": -400
     }
 
 

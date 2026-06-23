@@ -83,6 +83,8 @@ class SistemaIA:
                             ia.direcao = direcao
                             if self._borda_a_frente(posicao, ia, plataformas):
                                 return
+                            if self._borda_pulo_seguro(posicao, ia, plataformas):
+                                return
                             sprite.flip_x = (direcao == -1)
                             fisica.vel_x = ia.velocidade * direcao
                             fisica.vel_y = -10
@@ -131,3 +133,15 @@ class SistemaIA:
             if pos_plat and sonda.colliderect(pos_plat.rect):
                 return False
         return True
+    
+    def _borda_pulo_seguro(self, posicao, ia, plataformas) -> bool:
+        """Retorna True se não há chão no ponto estimado de pouso (~150px à frente)."""
+        x_sonda = posicao.x + ia.direcao * 150
+        y_sonda = posicao.y + posicao.altura + 4
+        sonda = pygame.Rect(x_sonda, y_sonda, 4, 8)
+        for plat in plataformas:
+            pos_plat = plat.obter_componente("posicao")
+            if pos_plat and sonda.colliderect(pos_plat.rect):
+                return False  # tem chão no pouso
+        return True  # sem chão = pulo perigoso
+
