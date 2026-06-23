@@ -105,8 +105,24 @@
     "x": 400, "y_offset": -200
     },
     {
+    "tipo": "caminhante",
+    "x": 1090, "y_offset": -500
+    },
+    {
+    "tipo": "caminhante",
+    "x": 2500, "y_offset": -500
+    },
+    {
     "tipo": "saltador",
     "x": 700, "y_offset": -200
+    },
+    {
+    "tipo": "saltador",
+    "x": 1400, "y_offset": -200
+    },
+    {
+    "tipo": "saltador",
+    "x": 2100, "y_offset": -200
     },
     {
     "tipo": "voador",
